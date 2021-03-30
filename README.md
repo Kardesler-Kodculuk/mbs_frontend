@@ -5,7 +5,7 @@
 To get the frontend, run:
 
 ```
-https://github.com/Kardesler-Kodculuk/mbs_frontend
+git clone https://github.com/Kardesler-Kodculuk/mbs_frontend
 ```
 
 Or, alternatively get it using the GitHub Desktop client. After entering the directory of the repository, run:
