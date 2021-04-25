@@ -2,8 +2,9 @@
 
 body,
 html {
+  background-color: #e9ecef;
   font-family: "Open Sans", sans-serif;
-  background-color: "#343a40";
+
   height: 100vh;
   overflow: auto;
 }
@@ -22,6 +23,7 @@ html {
   }
 
   .bigger {
+    background-color: #fff;
     max-width: 1200px;
     min-height: 45em;
   }
