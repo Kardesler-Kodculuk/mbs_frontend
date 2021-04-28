@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import axios from 'axios';
+import { useState } from "react";
+import { useHistory } from "react-router-dom";
+import axios from "axios";
 
 export default function useAuth() {
-  const url = 'http://localhost:5000/';
+  const url = "http://localhost:5000/";
 
   let history = useHistory();
 
@@ -11,7 +11,7 @@ export default function useAuth() {
 
   const logoutUser = async () => {
     return axios
-      .delete(url + 'jwt', { withCredentials: true })
+      .delete(url + "jwt", { withCredentials: true })
       .then(async (e) => {
         history.go(0);
       })

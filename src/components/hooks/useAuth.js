@@ -1,10 +1,10 @@
-import { useContext, useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import axios from 'axios';
-import { UserContext } from './UserContext';
+import { useContext, useState } from "react";
+import { useHistory } from "react-router-dom";
+import axios from "axios";
+import { UserContext } from "./UserContext";
 
 export default function useAuth() {
-  const url = 'http://localhost:5000/';
+  const url = "http://localhost:5000/";
 
   let history = useHistory();
   const { setUser } = useContext(UserContext);
@@ -12,13 +12,13 @@ export default function useAuth() {
 
   const setUserContext = async () => {
     return await axios
-      .get(url + 'users', { withCredentials: true })
+      .get(url + "users", { withCredentials: true })
       .then((res) => {
         setUser(res.data);
-        history.push('/' + res.data.id + '/' + res.data.role+'/home');
+        history.push("/" + res.data.id + "/" + res.data.role + "/home");
       })
       .catch((err) => {
-        setError(err);
+        setError(true);
       });
   };
 
@@ -26,7 +26,7 @@ export default function useAuth() {
     const { username, password } = data;
     return axios
       .post(
-        url + 'jwt',
+        url + "jwt",
         {
           username,
           password,
@@ -37,7 +37,7 @@ export default function useAuth() {
         await setUserContext();
       })
       .catch((err) => {
-        setError(err);
+        setError(true);
       });
   };
 

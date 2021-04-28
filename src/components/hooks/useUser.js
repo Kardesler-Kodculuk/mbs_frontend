@@ -3,6 +3,7 @@ import axios from 'axios';
 
 export default function useUser() {
   const url = 'http://localhost:5000/';
+
   const [user, setUser] = useState(null);
   const [isLoading, setLoading] = useState(true);
 
