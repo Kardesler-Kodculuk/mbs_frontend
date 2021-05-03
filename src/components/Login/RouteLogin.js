@@ -10,7 +10,7 @@ export default function RouteLogin(props) {
   
 
   if (user) {
-    return <Route {...rest} render={(props) => <Component {...props} />} />;
+    return <Route path={`/${user[user.role].user_id}/${user.role}`} render={(props) => <Component {...props} />} />;
   }
 
   return <Redirect to='/login' />;

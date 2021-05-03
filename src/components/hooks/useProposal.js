@@ -28,28 +28,11 @@ export default function useProposals() {
 		}
 	}, [user.role, isLoading]);
 
-	const studentProposal = async (advisor) => {
-		const { advisor_id } = advisor;
-		return axios
-			.post(
-				url + "proposals",
-				{
-					advisor_id,
-				},
-				{ withCredentials: true }
-			)
-			.then(async (e) => {})
-			.catch((err) => {
-				setError(true);
-			});
-	};
-
 
 
 	return {
 		proposals,
 		setProposals,
-		studentProposal,
 		isLoading,
 		setLoading,
 		error,

@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import useForm from "../hooks/useForm";
 import { UserContext } from "../hooks/UserContext";
 import axios from "axios";
+import useAlert from "../hooks/useAlert";
 
 import {
 	Card,
@@ -43,6 +44,15 @@ export default function TopicForm() {
 		},
 	});
 
+	const { Alerts, handleOpen } = useAlert([
+		{
+			name: "success",
+			type: "success",
+			page_: "TopicForm",
+			body: "Thesis Topic has been submitted.",
+		},
+	]);
+
 	const thesisTopicSubmit = async (data) => {
 		const url = "https://mbsbackend.herokuapp.com/";
 		const { thesis_topic } = data;
@@ -55,6 +65,7 @@ export default function TopicForm() {
 				{ withCredentials: true }
 			)
 			.then(async (e) => {
+				handleOpen("success");
 			})
 			.catch((err) => {
 				setError(true);
@@ -67,35 +78,38 @@ export default function TopicForm() {
 	};
 
 	return (
-		<Card className={classes.root}>
-			<CardContent>
-				<Typography variant="h3" className={classes.title} color="primary">
-					Submit Thesis Topic
-				</Typography>
-				<Divider />
-				<Container>
-					<form onSubmit={handleSubmit}>
-						<Grid
-							container
-							direction="column"
-							justify="center"
-							alignItems="center"
-							style={{ minHeight: "20vh", minWidth: "35vh" }}>
-							<TextField
-								className={classes.textField}
-								required
-								label="Thesis Topic"
-								color="primary"
-								onChange={(e) => handleChange("thesis_topic", e)}
-							/>
+		<div>
+			<Card className={classes.root}>
+				<CardContent>
+					<Typography variant="h3" className={classes.title} color="primary">
+						Submit Thesis Topic
+					</Typography>
+					<Divider />
+					<Container>
+						<form onSubmit={handleSubmit}>
+							<Grid
+								container
+								direction="column"
+								justify="center"
+								alignItems="center"
+								style={{ minHeight: "20vh", minWidth: "35vh" }}>
+								<TextField
+									className={classes.textField}
+									required
+									label="Thesis Topic"
+									color="primary"
+									onChange={(e) => handleChange("thesis_topic", e)}
+								/>
 
-							<Button variant="contained" color="primary" type="submit">
-								Submit
-							</Button>
-						</Grid>
-					</form>
-				</Container>
-			</CardContent>
-		</Card>
+								<Button variant="contained" color="primary" type="submit">
+									Submit
+								</Button>
+							</Grid>
+						</form>
+					</Container>
+				</CardContent>
+			</Card>
+			<Alerts />
+		</div>
 	);
 }

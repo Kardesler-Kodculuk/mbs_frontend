@@ -15,7 +15,6 @@ export default function useAuth() {
       .get(url + "users", { withCredentials: true })
       .then((res) => {
         setUser(res.data);
-        history.push("/" + res.data.id + "/" + res.data.role + "/home");
       })
       .catch((err) => {
         setError(true);

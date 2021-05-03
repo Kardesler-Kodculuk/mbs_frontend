@@ -41,7 +41,8 @@ export default function Login({ setToken }) {
 	}
 
 	if (user) {
-		return <Redirect to={`/${user.id}/${user.role}/home`} />;
+
+		return <Redirect to={`/${user[user.role].user_id}/${user.role}/home`} />;
 	}
 
 	const handleLogin = async (e) => {

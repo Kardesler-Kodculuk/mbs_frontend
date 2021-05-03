@@ -4,18 +4,19 @@ import { Link } from "react-router-dom";
 import {
 	List,
 	Drawer,
-	MenuItem,
+	ListItem,
 	Divider,
 	Toolbar,
 	makeStyles,
-	Box,
+	Typography,
+	ListItemText,
 } from "@material-ui/core";
 
-const drawerWidth = 240;
+const drawerWidth = 220;
 
 const useStyles = makeStyles((theme) => ({
 	root: {
-		display: "flex"
+		display: "flex",
 	},
 	appBar: {
 		zIndex: theme.zIndex.drawer + 1,
@@ -31,9 +32,11 @@ const useStyles = makeStyles((theme) => ({
 		overflow: "auto",
 	},
 	item: {
-		fontSize: 19,
 		flexGrow: 1,
 		flexShrink: 1,
+	},
+	listItemText: {
+		fontSize: "0.7em", //Insert your required size
 	},
 	content: {
 		flexGrow: 1,
@@ -44,16 +47,18 @@ const useStyles = makeStyles((theme) => ({
 export default function Sidebar(props) {
 	const classes = useStyles();
 
-	const { selections: Selections, to: To, links: Links} = props;
+	const { selections: Selections, to: To, links: Links } = props;
 	const sidebar = Selections.map((content, i) => (
-		<div key={"sidebar_selection_"+i} >
-			<MenuItem className={classes.item}>
-				<Box component="div" display="inline" >
-					<Link className={`nav-link ${i === 0 ? "active" : ""}`} to={To + Links[i]}>
-						{content}
-					</Link>
-				</Box>
-			</MenuItem>
+		<div key={"sidebar_selection_" + i}>
+			<ListItem className={classes.item} button component={Link} to={To + Links[i]}>
+				<ListItemText
+					className={classes.listItemText}
+					primary={
+						<Typography variant="h6" component="h2">
+							{content}
+						</Typography>
+					}></ListItemText>
+			</ListItem>
 			<Divider />
 		</div>
 	));

@@ -9,6 +9,7 @@ import { TableRow, TableCell, IconButton } from "@material-ui/core";
 import useManagedStudents from "../hooks/useManagedStudents";
 import axios from "axios";
 import { Checkbox, makeStyles, FormGroup, FormControlLabel } from "@material-ui/core";
+import useAlert from "../hooks/useAlert";
 const url = "https://mbsbackend.herokuapp.com/";
 
 const useStyles = makeStyles((theme) => ({
@@ -46,6 +47,16 @@ export default function ManageStudents() {
 		setManagedStudentsLoading(true);
 	}
 
+	const { Alerts, handleOpen } = useAlert([
+		{ name: "approval", type: "success", page_: "ManageStudents", body: "Approval has been sent." },
+		{
+			name: "rejection",
+			type: "success",
+			page_: "ManageStudents",
+			body: "Rejection has been sent.",
+		},
+	]);
+
 	const [state, setState] = useState({
 		showStudents: true,
 		showProposals: false,
@@ -56,6 +67,7 @@ export default function ManageStudents() {
 		return axios
 			.put(url + "proposals/" + proposal_id, {}, { withCredentials: true })
 			.then(async (e) => {
+				handleOpen("approval");
 				reset();
 			})
 			.catch((err) => {
@@ -69,6 +81,7 @@ export default function ManageStudents() {
 		return axios
 			.delete(url + "proposals/" + proposal_id, { withCredentials: true })
 			.then(async (e) => {
+				handleOpen("rejection");
 				reset();
 			})
 			.catch((err) => {
@@ -102,64 +115,67 @@ export default function ManageStudents() {
 	]);
 
 	return (
-		<UserTable
-			title={"Previously Uploaded Students"}
-			checkboxes={
-				<FormGroup row>
-					{[
-						{ s: state.showStudents, name: "Show Managed Students", id: "showStudents" },
-						{ s: state.showProposals, name: "Show Proposals", id: "showProposals" },
-					].map((check) => (
-						<FormControlLabel
-							control={
-								<Checkbox checked={check.s} onChange={(e) => handleChange(e)} name={check.id} />
-							}
-							label={check.name}
-							key={"checkbox_manage_student" + check.id}
-						/>
-					))}
-				</FormGroup>
-			}>
-			{state.showStudents
-				? fetchedManagedStudents.map((student, i) => (
-						<TableRow key={"managed_table_row_" + student.name_ + " " + student.surname + i}>
-							<TableCell component="th" scope="row">
-								{student.name_ + " " + student.surname}
-							</TableCell>
-							<TableCell align="right">
-								<IconButton variant="contained" className={classes.button} onClick={(e) => {}}>
-									<OpenInNewIcon />
-								</IconButton>
-							</TableCell>
-						</TableRow>
-				  ))
-				: null}
-			{state.showProposals
-				? fetchedProposedStudents.map((student, i) => (
-						<TableRow key={"proposed_table_row_" + student.name_ + " " + student.surname + i}>
-							<TableCell component="th" scope="row">
-								{student.name_ + " " + student.surname}
-							</TableCell>
-							<TableCell align="right">
-								{student.thesis_topic}
-								<IconButton
-									variant="contained"
-									onClick={(e) => {
-										advisorAccept(proposals[i]);
-									}}>
-									<CheckIcon color="primary" />
-								</IconButton>
-								<IconButton
-									variant="contained"
-									onClick={(e) => {
-										advisorReject(proposals[i]);
-									}}>
-									<ClearIcon color="secondary" />
-								</IconButton>
-							</TableCell>
-						</TableRow>
-				  ))
-				: null}
-		</UserTable>
+		<div>
+			<UserTable
+				title={"Previously Uploaded Students"}
+				checkboxes={
+					<FormGroup row>
+						{[
+							{ s: state.showStudents, name: "Show Managed Students", id: "showStudents" },
+							{ s: state.showProposals, name: "Show Proposals", id: "showProposals" },
+						].map((check) => (
+							<FormControlLabel
+								control={
+									<Checkbox checked={check.s} onChange={(e) => handleChange(e)} name={check.id} />
+								}
+								label={check.name}
+								key={"checkbox_manage_student" + check.id}
+							/>
+						))}
+					</FormGroup>
+				}>
+				{state.showStudents
+					? fetchedManagedStudents.map((student, i) => (
+							<TableRow key={"managed_table_row_" + student.name_ + " " + student.surname + i}>
+								<TableCell component="th" scope="row">
+									{student.name_ + " " + student.surname}
+								</TableCell>
+								<TableCell align="right">
+									<IconButton variant="contained" className={classes.button} onClick={(e) => {}}>
+										<OpenInNewIcon />
+									</IconButton>
+								</TableCell>
+							</TableRow>
+					  ))
+					: null}
+				{state.showProposals
+					? fetchedProposedStudents.map((student, i) => (
+							<TableRow key={"proposed_table_row_" + student.name_ + " " + student.surname + i}>
+								<TableCell component="th" scope="row">
+									{student.name_ + " " + student.surname}
+								</TableCell>
+								<TableCell align="right">
+									{student.thesis_topic}
+									<IconButton
+										variant="contained"
+										onClick={(e) => {
+											advisorAccept(proposals[i]);
+										}}>
+										<CheckIcon color="primary" />
+									</IconButton>
+									<IconButton
+										variant="contained"
+										onClick={(e) => {
+											advisorReject(proposals[i]);
+										}}>
+										<ClearIcon color="secondary" />
+									</IconButton>
+								</TableCell>
+							</TableRow>
+					  ))
+					: null}
+			</UserTable>
+			<Alerts />
+		</div>
 	);
 }

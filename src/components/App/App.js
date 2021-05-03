@@ -12,18 +12,18 @@ import RouteLogin from "../Login/RouteLogin";
 import Landing from "../Landing/Landing";
 
 export default function App() {
-  const { user, setUser, isLoading } = useUser();
+	const { user, setUser, isLoading, setLoading } = useUser();
 
-  return (
-    <div className="wrapper">
-      <UserContext.Provider value={{ user, setUser, isLoading }}>
-        <Switch>
-          <Route exact path="/" component={Landing} />
-          <Route path="/login" component={Login} />
-          <RouteLogin path="/:uuid/student" component={Student} />
-          <RouteLogin path="/:uuid/advisor" component={Advisor} />
-        </Switch>
-      </UserContext.Provider>
-    </div>
-  );
+	return (
+		<div className="wrapper">
+			<UserContext.Provider value={{ user, setUser, isLoading, setLoading }}>
+				<Switch>
+					<Route exact path="/" component={Landing} />
+					<Route path="/login" component={Login} />
+					<RouteLogin path="/:id/student" component={Student} />
+					<RouteLogin path="/:id/advisor" component={Advisor} />
+				</Switch>
+			</UserContext.Provider>
+		</div>
+	);
 }

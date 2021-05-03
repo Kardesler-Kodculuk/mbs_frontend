@@ -10,7 +10,7 @@ export default function Landing() {
   }
 
   if (user) {
-    return <Redirect to={`/${user.id}/${user.role}`} />;
+    return <Redirect to={`/${user[user.role].user_id}/${user.role}/home`} />;
   }
 
   return <Redirect to='/login' />;

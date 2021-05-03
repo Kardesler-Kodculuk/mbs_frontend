@@ -6,10 +6,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./index.css";
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Route basename={process.env.PUBLIC_URL}>
-      <App />
-    </Route>
-  </React.StrictMode>,
-  document.getElementById("root")
+	<Route>
+		<App />
+	</Route>,
+
+	document.getElementById("root")
 );
