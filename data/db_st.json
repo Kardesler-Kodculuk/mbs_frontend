@@ -1,0 +1,80 @@
+{
+  "advisors": [
+    {
+      "id": 24,
+      "name": "Charlotte Froese",
+      "email": "charlottefischer@iyte.edu.tr",
+      "phone_number": "+90 5XX XXX XX XX",
+      "department": "Computer Engineering"
+    },
+    {
+      "id": 25,
+      "name": "Ted Chiang",
+      "email": "charlottefischer@iyte.edu.tr",
+      "phone_number": "+90 5XX XXX XX XX",
+      "department": "Computer Engineering"
+    },
+    {
+      "id": 26,
+      "name": "Kay McNulty",
+      "email": "charlottefischer@iyte.edu.tr",
+      "phone_number": "+90 5XX XXX XX XX",
+      "department": "Computer Engineering"
+    },
+    {
+      "id": 27,
+      "name": "Becky Jennings",
+      "email": "charlottefischer@iyte.edu.tr",
+      "phone_number": "+90 5XX XXX XX XX",
+      "department": "Computer Engineering"
+    },
+    {
+      "id": 28,
+      "name": "Betty Snyder",
+      "email": "charlottefischer@iyte.edu.tr",
+      "phone_number": "+90 5XX XXX XX XX",
+      "department": "Computer Engineering"
+    }
+  ],
+  "recommendations": [
+    {
+      "id": 12,
+      "student_id": 42,
+      "advisor_id": 24
+    },
+    {
+      "id": 13,
+      "student_id": 42,
+      "advisor_id": 25
+    },
+    {
+      "id": 14,
+      "student_id": 42,
+      "advisor_id": 26
+    },
+    {
+      "id": 15,
+      "student_id": 42,
+      "advisor_id": 27
+    },
+    {
+      "id": 16,
+      "student_id": 42,
+      "advisor_id": 28
+    }
+  ],
+  "students": [
+    {
+      "id": 42,
+      "name": "Kathleen Booth",
+      "email": "kathleenbooth@std.iyte.edu.tr",
+      "phone_number": "+90 5XX XXX XX XX",
+      "is_approved": true,
+      "semester": 4,
+      "program_name": "Computer Engineering",
+      "thesis_topic": "Visualization",
+      "graduation_status": "Graduated",
+      "jury_tss_decision": "Correctio\""
+    }
+  ]
+}

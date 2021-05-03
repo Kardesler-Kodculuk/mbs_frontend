@@ -1,32 +1,36 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-export default function useUser() {
+export default function useProposals() {
 	const url = "https://mbsbackend.herokuapp.com/";
 
-	const [user, setUser] = useState(null);
+	const [students, setStudents] = useState([]);
+	const [error, setError] = useState(null);
 	const [isLoading, setLoading] = useState(true);
 
 	useEffect(() => {
 		if (isLoading) {
-			async function findUser() {
+			const getProposals = async () =>
 				await axios
-					.get(url + "users", { withCredentials: true })
+					.get(url + "students", { withCredentials: true })
 					.then((res) => {
-						setUser(res.data);
+						setStudents(res.data);
 						setLoading(false);
 					})
 					.catch((err) => {
+						setError(err);
 						setLoading(false);
 					});
-			}
-			findUser();
+
+			getProposals();
 		}
 	}, [isLoading]);
 
 	return {
-		user,
-		setUser,
+		students,
+		setStudents,
 		isLoading,
+		setLoading,
+		error,
 	};
 }

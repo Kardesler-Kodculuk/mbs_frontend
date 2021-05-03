@@ -1,0 +1,102 @@
+{
+	"advisors": [
+		{
+			"id": 24,
+			"name": "Charlotte Froese",
+			"email": "charlottefischer@iyte.edu.tr",
+			"phone_number": "+90 5XX XXX XX XX",
+			"department": "Computer Engineering"
+		}
+	],
+	"proposals": [
+		{
+			"id": 12,
+			"student_id": 42,
+			"advisor_id": 24
+		},
+		{
+			"id": 13,
+			"student_id": 43,
+			"advisor_id": 24
+		},
+		{
+			"id": 14,
+			"student_id": 44,
+			"advisor_id": 24
+		}
+	],
+	"approved": [
+		{
+			"id": 12,
+			"student_id": 40,
+			"advisor_id": 24
+		},
+		{
+			"id": 13,
+			"student_id": 41,
+			"advisor_id": 24
+		}
+	],
+	"students": [
+		{
+			"id": 40,
+			"name": "Catherine Sky",
+			"email": "kathleenbooth@std.iyte.edu.tr",
+			"phone_number": "+90 5XX XXX XX XX",
+			"is_approved": true,
+			"semester": 4,
+			"program_name": "Computer Engineering",
+			"thesis_topic": "Graph Visualization",
+			"graduation_status": "Graduated",
+			"jury_tss_decision": "Correctio\""
+		},
+		{
+			"id": 41,
+			"name": "Maori Goodman",
+			"email": "kathleenbooth@std.iyte.edu.tr",
+			"phone_number": "+90 5XX XXX XX XX",
+			"is_approved": true,
+			"semester": 4,
+			"program_name": "Computer Engineering",
+			"thesis_topic": "Mal",
+			"graduation_status": "Graduated",
+			"jury_tss_decision": "Correctio\""
+		},
+		{
+			"id": 42,
+			"name": "Kathleen Booth",
+			"email": "kathleenbooth@std.iyte.edu.tr",
+			"phone_number": "+90 5XX XXX XX XX",
+			"is_approved": true,
+			"semester": 4,
+			"program_name": "Computer Engineering",
+			"thesis_topic": "Data Science",
+			"graduation_status": "Graduated",
+			"jury_tss_decision": "Correctio\""
+		},
+		{
+			"id": 43,
+			"name": "Bigfoot Auguries",
+			"email": "kathleenbooth@std.iyte.edu.tr",
+			"phone_number": "+90 5XX XXX XX XX",
+			"is_approved": true,
+			"semester": 4,
+			"program_name": "Computer Engineering",
+			"thesis_topic": "Graph Visualization",
+			"graduation_status": "Graduated",
+			"jury_tss_decision": "Correctio\""
+		},
+		{
+			"id": 44,
+			"name": "Ben Tennyson",
+			"email": "kathleenbooth@std.iyte.edu.tr",
+			"phone_number": "+90 5XX XXX XX XX",
+			"is_approved": true,
+			"semester": 4,
+			"program_name": "Computer Engineering",
+			"thesis_topic": "MAL",
+			"graduation_status": "Graduated",
+			"jury_tss_decision": "Correctio\""
+		}
+	]
+}

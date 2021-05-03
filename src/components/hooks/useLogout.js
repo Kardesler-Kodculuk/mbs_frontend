@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import axios from "axios";
 
 export default function useAuth() {
-  const url = "http://localhost:5000/";
+  const url = "https://mbsbackend.herokuapp.com/";
 
   let history = useHistory();
 

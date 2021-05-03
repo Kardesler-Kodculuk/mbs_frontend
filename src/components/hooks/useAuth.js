@@ -4,7 +4,7 @@ import axios from "axios";
 import { UserContext } from "./UserContext";
 
 export default function useAuth() {
-  const url = "http://localhost:5000/";
+  const url = "https://mbsbackend.herokuapp.com/";
 
   let history = useHistory();
   const { setUser } = useContext(UserContext);
