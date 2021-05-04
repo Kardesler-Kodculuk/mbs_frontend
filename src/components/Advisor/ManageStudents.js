@@ -177,7 +177,7 @@ export default function ManageStudents() {
 					  ))
 					: null}
 				{state.showProposals
-					? fetchedProposedStudents.map((student, i) => (
+					? fetchedProposedStudents.map((student,i) => (
 							<TableRow key={"proposed_table_row_" + student.name_ + " " + student.surname + i}>
 								<TableCell component="th" scope="row">
 									{student.name_ + " " + student.surname}
@@ -187,14 +187,18 @@ export default function ManageStudents() {
 									<IconButton
 										variant="contained"
 										onClick={(e) => {
-											advisorApprove(proposals[i]);
+											advisorApprove(
+												proposals[proposals.findIndex((p) => p.student_id === student.student_id)]
+											);
 										}}>
 										<CheckIcon color="primary" />
 									</IconButton>
 									<IconButton
 										variant="contained"
 										onClick={(e) => {
-											advisorReject(proposals[i]);
+											advisorReject(
+												proposals[proposals.findIndex((p) => p.student_id === student.student_id)]
+											);
 										}}>
 										<ClearIcon color="secondary" />
 									</IconButton>
