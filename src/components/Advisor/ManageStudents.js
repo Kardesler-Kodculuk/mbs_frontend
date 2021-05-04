@@ -169,13 +169,7 @@ export default function ManageStudents() {
 									{student.name_ + " " + student.surname}
 								</TableCell>
 								<TableCell align="right">
-									<IconButton
-										variant="contained"
-										className={classes.button}
-										onClick={(e) => {
-											handleOpen("rejection");
-											reset();
-										}}>
+									<IconButton variant="contained" className={classes.button} onClick={(e) => {}}>
 										<OpenInNewIcon />
 									</IconButton>
 								</TableCell>
