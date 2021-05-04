@@ -15,6 +15,8 @@ const useStyles = makeStyles({
 	},
 });
 
+//Welcome page
+//Shows user name and privilege
 export default function Welcome() {
 	const { user } = useContext(UserContext);
 	const classes = useStyles();

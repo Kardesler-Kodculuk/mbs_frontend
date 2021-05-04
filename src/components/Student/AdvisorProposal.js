@@ -19,6 +19,8 @@ export default function AdvisorProposal() {
 		{ name: "success", type: "success", page_: "AdvisorProposal", body: "Proposal has been sent." },
 	]);
 
+	//Student proposal request to the advisor
+	//Reloads user to see if proposal is successful
 	const studentProposal = async (advisor) => {
 		const { advisor_id } = advisor;
 		return axios
@@ -38,6 +40,8 @@ export default function AdvisorProposal() {
 			});
 	};
 
+	//Waits for proposal ids and user to load
+	//Fetches the advisors from the proposals/recommendations
 	useEffect(() => {
 		if (isProposalLoading || isUserLoading) {
 			return <div />;

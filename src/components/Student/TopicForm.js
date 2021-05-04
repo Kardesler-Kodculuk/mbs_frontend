@@ -38,12 +38,15 @@ export default function TopicForm() {
 	const [error, setError] = useState(null);
 	const classes = useStyles();
 	const { user } = useContext(UserContext);
+
+	//Thesis Topic Form
 	const { values, handleChange } = useForm({
 		initialValues: {
 			thesis_topic: "",
 		},
 	});
 
+	//Alert For Thesis Topic
 	const { Alerts, handleOpen } = useAlert([
 		{
 			name: "success",
@@ -52,7 +55,7 @@ export default function TopicForm() {
 			body: "Thesis Topic has been submitted.",
 		},
 	]);
-
+	//Thesis Topic submit request to the MBS
 	const thesisTopicSubmit = async (data) => {
 		const url = "https://mbsbackend.herokuapp.com/";
 		const { thesis_topic } = data;
@@ -72,6 +75,7 @@ export default function TopicForm() {
 			});
 	};
 
+	//Prevents from page to reset by preventing default
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		await thesisTopicSubmit(values);

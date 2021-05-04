@@ -7,8 +7,7 @@ export default function RouteLogin(props) {
   const { user, isLoading } = useContext(UserContext);
   const { component: Component, ...rest } = props;
 
-  
-
+  //Router for user pages
   if (user) {
     return <Route path={`/${user[user.role].user_id}/${user.role}`} render={(props) => <Component {...props} />} />;
   }

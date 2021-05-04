@@ -18,24 +18,30 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
+//Manage Students Page
+//Shows Approved Students and Student Approvals Together
 export default function ManageStudents() {
 	const classes = useStyles();
 	const [error, setError] = useState(null);
+	//Proposal Id fetches
 	const {
 		proposals,
 		isLoading: isProposalsLoading,
 		setLoading: setProposalLoading,
 	} = useProposals();
+	//Managed Students Id fetches
 	const {
 		students: managedStudents,
 		isLoading: isManagedStudentsLoading,
 		setLoading: setManagedStudentsLoading,
 	} = useManagedStudents();
+	//Proposed Students from fetched Ids
 	const {
 		users: fetchedProposedStudents,
 		isLoading: isFetchedProposedStudentsLoading,
 		setUserIds: setProposedStudentsIds,
 	} = useUsers();
+	//Managed Students from fetched Ids
 	const {
 		users: fetchedManagedStudents,
 		isLoading: isFetchedManagedStudentsLoading,
@@ -47,6 +53,7 @@ export default function ManageStudents() {
 		setManagedStudentsLoading(true);
 	}
 
+	//Alerts For approval and rejection requests
 	const { Alerts, handleOpen } = useAlert([
 		{ name: "approval", type: "success", page_: "ManageStudents", body: "Approval has been sent." },
 		{
@@ -57,12 +64,19 @@ export default function ManageStudents() {
 		},
 	]);
 
+	//States for showing Proposed and Approved Students on the User Table
 	const [state, setState] = useState({
 		showStudents: true,
 		showProposals: false,
 	});
 
-	const advisorAccept = async (proposal) => {
+	//Change handler for show status
+	const handleChange = (e) => {
+		setState({ ...state, [e.target.name]: e.target.checked });
+	};
+
+	//Sends an advisor accept request to the MBS backend
+	const advisorApprove = async (proposal) => {
 		const { proposal_id } = proposal;
 		return axios
 			.put(url + "proposals/" + proposal_id, {}, { withCredentials: true })
@@ -76,6 +90,7 @@ export default function ManageStudents() {
 			});
 	};
 
+	//Sends an advisor rejection request to the MBS backend
 	const advisorReject = async (proposal) => {
 		const { proposal_id } = proposal;
 		return axios
@@ -90,10 +105,9 @@ export default function ManageStudents() {
 			});
 	};
 
-	const handleChange = (e) => {
-		setState({ ...state, [e.target.name]: e.target.checked });
-	};
-
+	//Content refreshes if loading status changes for loading states
+	//Waits for ids and put the ids to the want to be fetched student states
+	//After Users fetched loads the Table again
 	useEffect(() => {
 		const reset = async () => {
 			if (isProposalsLoading || isManagedStudentsLoading) {
@@ -159,7 +173,7 @@ export default function ManageStudents() {
 									<IconButton
 										variant="contained"
 										onClick={(e) => {
-											advisorAccept(proposals[i]);
+											advisorApprove(proposals[i]);
 										}}>
 										<CheckIcon color="primary" />
 									</IconButton>

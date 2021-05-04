@@ -2,6 +2,8 @@ import React from "react";
 
 import { Switch, Route } from "react-router-dom";
 
+//Content Part of the User Pages
+//Works with Routing again
 export default function Content(props) {
   const { contents: Contents, to: To, links: Links, key_: Key } = props;
 

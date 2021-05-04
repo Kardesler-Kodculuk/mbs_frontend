@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-export default function useProposals() {
+export default function useManagedStudents() {
 	const url = "https://mbsbackend.herokuapp.com/";
 
 	const [students, setStudents] = useState([]);
 	const [error, setError] = useState(null);
 	const [isLoading, setLoading] = useState(true);
 
+	//Loads 
 	useEffect(() => {
 		if (isLoading) {
 			const getProposals = async () =>

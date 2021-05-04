@@ -4,6 +4,8 @@ import Welcome from "../User/Welcome";
 import User from "../User/User";
 import ManageStudents from "./ManageStudents";
 
+//Renders Advisors Page
+//Uses User function as a Template
 export default function Advisor() {
 	const Selections = ["Home", "Manage Student"];
 	const Contents = [<Welcome />, <ManageStudents />];

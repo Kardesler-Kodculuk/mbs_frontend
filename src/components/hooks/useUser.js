@@ -7,6 +7,7 @@ export default function useUser() {
 	const [user, setUser] = useState(null);
 	const [isLoading, setLoading] = useState(true);
 
+	//Fetches the user information if needed
 	useEffect(() => {
 		if (isLoading) {
 			async function findUser() {

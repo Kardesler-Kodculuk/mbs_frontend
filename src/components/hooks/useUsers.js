@@ -10,6 +10,9 @@ export default function useUsers() {
 	const [isLoading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
 
+	//Fetches the given user Ids from the Backend
+	//Used by student and advisors
+	//Can be built upon more
 	useEffect(() => {
 		const findUser = async () => {
 			let newUsers = [];

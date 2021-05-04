@@ -4,6 +4,7 @@ import { Snackbar } from "@material-ui/core";
 import Fade from "@material-ui/core/Fade";
 
 export default function useAlert(initials) {
+	//Maps the given alert settings to the Alert state
 	const [state, setState] = useState(() => {
 		const reduced = [];
 		return initials.reduce((map, alert) => {
@@ -24,19 +25,20 @@ export default function useAlert(initials) {
 		const i = state.findIndex((e) => e.name === alert);
 		return i;
 	};
-
+	//Opens the given named alert
 	const handleOpen = (alert) => {
 		let newState = [...state];
 		newState[alertIndex(alert)].open = true;
 		setState([...newState]);
 	};
-
+	//Close the given named alert
 	const handleClose = (alert) => {
 		let newState = [...state];
 		newState[alertIndex(alert)].open = false;
 		setState([...newState]);
 	};
 
+	//Render function for mapped Alerts
 	function Alerts() {
 		return (
 			<div>

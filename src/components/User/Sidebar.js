@@ -44,10 +44,12 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
+//Sidebar containing the selections
 export default function Sidebar(props) {
 	const classes = useStyles();
-
 	const { selections: Selections, to: To, links: Links } = props;
+
+	//Sidebar mapped from the Selections, and links to the selections
 	const sidebar = Selections.map((content, i) => (
 		<div key={"sidebar_selection_" + i}>
 			<ListItem className={classes.item} button component={Link} to={To + Links[i]}>

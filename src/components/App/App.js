@@ -12,8 +12,11 @@ import RouteLogin from "../Login/RouteLogin";
 import Landing from "../Landing/Landing";
 
 export default function App() {
+	//User state
 	const { user, setUser, isLoading, setLoading } = useUser();
-
+	
+	//Router for the pages
+	//All of the user routes will be here
 	return (
 		<div className="wrapper">
 			<UserContext.Provider value={{ user, setUser, isLoading, setLoading }}>

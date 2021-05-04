@@ -28,6 +28,8 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
+//User Table Template
+//Table inside a Card and title of the Table
 export default function UserTable(props) {
 	const classes = useStyles();
 	const { children: Children, checkboxes } = props;

@@ -3,9 +3,9 @@ import useAuth from "../hooks/useAuth";
 import useForm from "../hooks/useForm";
 import { UserContext } from "../hooks/UserContext";
 import { Redirect } from "react-router-dom";
-
 import { Container, Grid, TextField, makeStyles, Typography, Button } from "@material-ui/core";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+
 const useStyles = makeStyles((theme) => ({
 	root: {
 		display: "flex",
@@ -36,15 +36,16 @@ export default function Login({ setToken }) {
 	});
 	const { error, loginUser } = useAuth();
 
+	//If still loading wait
 	if (isLoading) {
 		return <div />;
 	}
 
+	//If user context is set redirect to the user page
 	if (user) {
-
 		return <Redirect to={`/${user[user.role].user_id}/${user.role}/home`} />;
 	}
-
+	//Login handler
 	const handleLogin = async (e) => {
 		e.preventDefault();
 		await loginUser(values);

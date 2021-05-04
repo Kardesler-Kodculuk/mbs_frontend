@@ -9,6 +9,7 @@ export default function useProposals() {
 	const [error, setError] = useState(null);
 	const [isLoading, setLoading] = useState(true);
 
+	//Loads proposals if isLoading becomes True
 	useEffect(() => {
 		if (isLoading) {
 			const type = user.role === "advisor" ? "proposals" : "recommendations";

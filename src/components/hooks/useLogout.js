@@ -8,7 +8,7 @@ export default function useAuth() {
   let history = useHistory();
 
   const [error, setError] = useState(null);
-
+  //Logouts the user, delete user from user context
   const logoutUser = async () => {
     return axios
       .delete(url + "jwt", { withCredentials: true })

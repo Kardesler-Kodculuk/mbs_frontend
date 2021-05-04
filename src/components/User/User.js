@@ -41,6 +41,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
+//Template for all Users
 export default function User(props) {
 	const { user } = useContext(UserContext);
 	const { logoutUser } = useLogout(null);
@@ -48,6 +49,8 @@ export default function User(props) {
 	const classes = useStyles();
 	const { selections: Selections, links: Links, contents: Contents } = props;
 
+	//Contains User, AppBar and Sidebar.
+	//Get Mapped from given values Selections, Links, Contents
 	return (
 		<Container>
 			<div className={classes.root}>
