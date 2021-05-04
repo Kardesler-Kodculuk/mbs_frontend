@@ -3,23 +3,27 @@ import Alert from "@material-ui/lab/Alert";
 import { Snackbar } from "@material-ui/core";
 import Fade from "@material-ui/core/Fade";
 
-export default function useAlert(initials) {
+export default function useAlert() {
 	//Maps the given alert settings to the Alert state
-	const [state, setState] = useState(() => {
-		const reduced = [];
-		return initials.reduce((map, alert) => {
-			return [
-				...map,
-				{
-					name: alert["name"],
-					body: alert.body,
-					type: alert.type,
-					key: alert.name + alert.page_,
-					open: false,
-				},
-			];
-		}, reduced);
-	});
+	const [state, setState] = useState(null);
+
+	const setAlerts = (alerts) => {
+		setState(() => {
+			const reduced = [];
+			return alerts.reduce((map, alert) => {
+				return [
+					...map,
+					{
+						name: alert["name"],
+						body: alert.body,
+						type: alert.type,
+						key: alert.name + alert.page_,
+						open: false,
+					},
+				];
+			}, reduced);
+		});
+	};
 
 	const alertIndex = (alert) => {
 		const i = state.findIndex((e) => e.name === alert);
@@ -40,6 +44,9 @@ export default function useAlert(initials) {
 
 	//Render function for mapped Alerts
 	function Alerts() {
+		if (state == null) {
+			return null;
+		}
 		return (
 			<div>
 				{state.map((alert) => (
@@ -59,7 +66,9 @@ export default function useAlert(initials) {
 	}
 
 	return {
+		state,
 		Alerts,
+		setAlerts,
 		handleOpen,
 	};
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import CheckIcon from "@material-ui/icons/Check";
 import ClearIcon from "@material-ui/icons/Clear";
 import OpenInNewIcon from "@material-ui/icons/OpenInNew";
@@ -9,7 +9,7 @@ import { TableRow, TableCell, IconButton } from "@material-ui/core";
 import useManagedStudents from "../hooks/useManagedStudents";
 import axios from "axios";
 import { Checkbox, makeStyles, FormGroup, FormControlLabel } from "@material-ui/core";
-import useAlert from "../hooks/useAlert";
+import { AlertContext } from "../hooks/AlertContext";
 const url = "https://mbsbackend.herokuapp.com/";
 
 const useStyles = makeStyles((theme) => ({
@@ -23,6 +23,8 @@ const useStyles = makeStyles((theme) => ({
 export default function ManageStudents() {
 	const classes = useStyles();
 	const [error, setError] = useState(null);
+	const { setAlerts, handleOpen } = useContext(AlertContext);
+	const [alertFlag, setAlertFlag] = useState(true);
 	//Proposal Id fetches
 	const {
 		proposals,
@@ -39,30 +41,23 @@ export default function ManageStudents() {
 	const {
 		users: fetchedProposedStudents,
 		isLoading: isFetchedProposedStudentsLoading,
+		setLoading: setFetchedProposedStudentsLoading,
 		setUserIds: setProposedStudentsIds,
 	} = useUsers();
 	//Managed Students from fetched Ids
 	const {
 		users: fetchedManagedStudents,
 		isLoading: isFetchedManagedStudentsLoading,
+		setLoading: setFetchedManagedStudentsLoading,
 		setUserIds: setManagedStudentsIds,
 	} = useUsers();
 
 	function reset() {
 		setProposalLoading(true);
 		setManagedStudentsLoading(true);
+		setFetchedProposedStudentsLoading(true);
+		setFetchedManagedStudentsLoading(true);
 	}
-
-	//Alerts For approval and rejection requests
-	const { Alerts, handleOpen } = useAlert([
-		{ name: "approval", type: "success", page_: "ManageStudents", body: "Approval has been sent." },
-		{
-			name: "rejection",
-			type: "success",
-			page_: "ManageStudents",
-			body: "Rejection has been sent.",
-		},
-	]);
 
 	//States for showing Proposed and Approved Students on the User Table
 	const [state, setState] = useState({
@@ -108,13 +103,32 @@ export default function ManageStudents() {
 	//Content refreshes if loading status changes for loading states
 	//Waits for ids and put the ids to the want to be fetched student states
 	//After Users fetched loads the Table again
+	//Because There is too many re-renders for this page i include a alert flag to not set alerts too many times
 	useEffect(() => {
+		if (alertFlag) {
+			setAlerts([
+				{
+					name: "approval",
+					type: "success",
+					page_: "ManageStudents",
+					body: "Approval has been sent.",
+				},
+				{
+					name: "rejection",
+					type: "success",
+					page_: "ManageStudents",
+					body: "Rejection has been sent.",
+				},
+			]);
+			setAlertFlag(false);
+		}
 		const reset = async () => {
 			if (isProposalsLoading || isManagedStudentsLoading) {
 				return <div />;
 			}
 			setProposedStudentsIds(proposals.map((proposal) => proposal.student_id));
 			setManagedStudentsIds(managedStudents.map((student) => student));
+
 			if (isFetchedManagedStudentsLoading || isFetchedProposedStudentsLoading) {
 				return <div />;
 			}
@@ -155,7 +169,13 @@ export default function ManageStudents() {
 									{student.name_ + " " + student.surname}
 								</TableCell>
 								<TableCell align="right">
-									<IconButton variant="contained" className={classes.button} onClick={(e) => {}}>
+									<IconButton
+										variant="contained"
+										className={classes.button}
+										onClick={(e) => {
+											handleOpen("rejection");
+											reset();
+										}}>
 										<OpenInNewIcon />
 									</IconButton>
 								</TableCell>
@@ -189,7 +209,6 @@ export default function ManageStudents() {
 					  ))
 					: null}
 			</UserTable>
-			<Alerts />
 		</div>
 	);
 }

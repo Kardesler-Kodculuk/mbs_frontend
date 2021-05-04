@@ -42,6 +42,7 @@ export default function useUsers() {
 		UserIds,
 		setUserIds,
 		isLoading,
+		setLoading,
 		error,
 	};
 }

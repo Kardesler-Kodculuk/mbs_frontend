@@ -1,9 +1,8 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import useForm from "../hooks/useForm";
 import { UserContext } from "../hooks/UserContext";
 import axios from "axios";
-import useAlert from "../hooks/useAlert";
-
+import { AlertContext } from "../hooks/AlertContext";
 import {
 	Card,
 	CardContent,
@@ -38,7 +37,8 @@ export default function TopicForm() {
 	const [error, setError] = useState(null);
 	const classes = useStyles();
 	const { user } = useContext(UserContext);
-
+	const { setAlerts, handleOpen } = useContext(AlertContext);
+	
 	//Thesis Topic Form
 	const { values, handleChange } = useForm({
 		initialValues: {
@@ -47,14 +47,7 @@ export default function TopicForm() {
 	});
 
 	//Alert For Thesis Topic
-	const { Alerts, handleOpen } = useAlert([
-		{
-			name: "success",
-			type: "success",
-			page_: "TopicForm",
-			body: "Thesis Topic has been submitted.",
-		},
-	]);
+
 	//Thesis Topic submit request to the MBS
 	const thesisTopicSubmit = async (data) => {
 		const url = "https://mbsbackend.herokuapp.com/";
@@ -80,6 +73,17 @@ export default function TopicForm() {
 		e.preventDefault();
 		await thesisTopicSubmit(values);
 	};
+
+	useEffect(() => {
+		setAlerts([
+			{
+				name: "success",
+				type: "success",
+				page_: "TopicForm",
+				body: "Thesis Topic has been submitted.",
+			},
+		]);
+	}, []);
 
 	return (
 		<div>
@@ -113,7 +117,6 @@ export default function TopicForm() {
 					</Container>
 				</CardContent>
 			</Card>
-			<Alerts />
 		</div>
 	);
 }

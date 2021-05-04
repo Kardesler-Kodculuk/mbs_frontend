@@ -1,8 +1,8 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 
 import { useRouteMatch } from "react-router-dom";
 import { UserContext } from "../hooks/UserContext";
-
+import { AlertContext } from "../hooks/AlertContext";
 import {
 	Container,
 	AppBar,
@@ -48,50 +48,53 @@ export default function User(props) {
 	let { path, url } = useRouteMatch();
 	const classes = useStyles();
 	const { selections: Selections, links: Links, contents: Contents } = props;
-
+	const { AlertState, Alerts } = useContext(AlertContext);
 	//Contains User, AppBar and Sidebar.
 	//Get Mapped from given values Selections, Links, Contents
 	return (
-		<Container>
-			<div className={classes.root}>
-				<CssBaseline />
-				<AppBar position="fixed" className={classes.appBar}>
-					<Toolbar>
-						<IconButton
-							edge="start"
-							className={classes.menuButton}
-							color="inherit"
-							aria-label="open drawer">
-							<AccountCircleIcon />
-						</IconButton>
-						<Typography variant="h6" className={classes.title}>
-							MBS
-						</Typography>
-						<div className={classes.logout}>
-							<IconButton color="inherit" onClick={logoutUser}>
-								<ExitToAppOutlinedIcon />
+		<div>
+			<Container>
+				<div className={classes.root}>
+					<CssBaseline />
+					<AppBar position="fixed" className={classes.appBar}>
+						<Toolbar>
+							<IconButton
+								edge="start"
+								className={classes.menuButton}
+								color="inherit"
+								aria-label="open drawer">
+								<AccountCircleIcon />
 							</IconButton>
-						</div>
-					</Toolbar>
-				</AppBar>
-				{user === null ? (
-					<div></div>
-				) : (
-					<Sidebar
-						username={user.username}
-						selections={Selections}
-						to={url}
-						links={Links}
-						key_={"student_sidebar"}
-						logoutHandler={logoutUser}
-					/>
-				)}
-				<main className={classes.content}>
-					<Grid container justify="center" alignItems="center" style={{ minHeight: "60vh" }}>
-						<Content contents={Contents} to={path} links={Links} key_={"student_content"} />
-					</Grid>
-				</main>
-			</div>
-		</Container>
+							<Typography variant="h6" className={classes.title}>
+								MBS
+							</Typography>
+							<div className={classes.logout}>
+								<IconButton color="inherit" onClick={logoutUser}>
+									<ExitToAppOutlinedIcon />
+								</IconButton>
+							</div>
+						</Toolbar>
+					</AppBar>
+					{user === null ? (
+						<div></div>
+					) : (
+						<Sidebar
+							username={user.username}
+							selections={Selections}
+							to={url}
+							links={Links}
+							key_={"student_sidebar"}
+							logoutHandler={logoutUser}
+						/>
+					)}
+					<main className={classes.content}>
+						<Grid container justify="center" alignItems="center" style={{ minHeight: "60vh" }}>
+							<Content contents={Contents} to={path} links={Links} key_={"student_content"} />
+						</Grid>
+					</main>
+				</div>
+				{Alerts()}
+			</Container>
+		</div>
 	);
 }

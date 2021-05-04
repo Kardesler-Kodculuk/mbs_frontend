@@ -4,7 +4,7 @@ import User from "../User/User";
 import TopicForm from "./TopicForm";
 import AdvisorProposal from "./AdvisorProposal";
 
-//Renders Student Page
+//Renders Studentww Page
 //Uses User function as a Template
 export default function Student() {
 	const Selections = ["Home", "Select Topic", "Manage Thesis", "Select Advisor"];

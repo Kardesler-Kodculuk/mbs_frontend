@@ -8,16 +8,16 @@ import UserTable from "../User/UserTable";
 import useAlert from "../hooks/useAlert";
 import Alert from "@material-ui/lab/Alert";
 import { TableRow, TableCell, IconButton } from "@material-ui/core";
+import { AlertContext } from "../hooks/AlertContext";
 
 export default function AdvisorProposal() {
 	const url = "https://mbsbackend.herokuapp.com/";
 	const { user, isLoading: isUserLoading, setLoading: setUserLoading } = useContext(UserContext);
-	const { proposals, isLoading: isProposalLoading, reset } = useProposals();
+	const { proposals, isLoading: isProposalLoading } = useProposals();
 	const { users, isLoading: isAdvisorLoading, setUserIds } = useUsers();
 	const [error, setError] = useState(null);
-	const { Alerts, handleOpen } = useAlert([
-		{ name: "success", type: "success", page_: "AdvisorProposal", body: "Proposal has been sent." },
-	]);
+	const { setAlerts, handleOpen } = useContext(AlertContext);
+	const [alertFlag, setAlertFlag] = useState(true);
 
 	//Student proposal request to the advisor
 	//Reloads user to see if proposal is successful
@@ -43,6 +43,17 @@ export default function AdvisorProposal() {
 	//Waits for proposal ids and user to load
 	//Fetches the advisors from the proposals/recommendations
 	useEffect(() => {
+		if (alertFlag) {
+			setAlerts([
+				{
+					name: "success",
+					type: "success",
+					page_: "AdvisorProposal",
+					body: "Proposal has been sent.",
+				},
+			]);
+			setAlertFlag(false);
+		}
 		if (isProposalLoading || isUserLoading) {
 			return <div />;
 		}
@@ -77,7 +88,6 @@ export default function AdvisorProposal() {
 					))}
 				</UserTable>
 			)}
-			<Alerts />
 		</div>
 	);
 }
