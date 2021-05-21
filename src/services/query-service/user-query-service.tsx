@@ -24,17 +24,25 @@ export async function updateInfo<T>(endPoint: string, ID: number, body: { [key: 
         .then((res) => res.data)
 }
 
-export async function postAction<T>(endPoint: string, ID: number, body: { [key: string]: string | number }): Promise<T> {
+export async function postAction<T>(endPoint: string, ID: number): Promise<T> {
+    return await axios.post<Promise<T>>(`${ MBS?.url }${ endPoint }/${ ID }`, { withCredentials: true })
+        .then((res) => res.data)
+}
+
+export async function postActionWithBody<T>(endPoint: string, ID: number, body: { [key: string]: string | number }): Promise<T> {
     return await axios.post<Promise<T>>(`${ MBS?.url }${ endPoint }/${ ID }`, body, { withCredentials: true })
         .then((res) => res.data)
 }
+
 
 export const QueryProvider = (props: props) => {
 
     const value: Query = {
         queryID,
         queryInfo,
-        updateInfo
+        updateInfo,
+        postAction,
+        postActionWithBody
     }
 
     return (
