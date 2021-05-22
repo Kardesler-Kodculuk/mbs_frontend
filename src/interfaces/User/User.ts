@@ -2,25 +2,25 @@
 export type User = {
     role: string;
     username: string;
-    jury?: Jury
-    student?: Student
-    advisor?: Advisor
+    jury?: JuryData
+    student?: StudentData
+    advisor?: AdvisorData
 } & UserInfo
 
 type UserInfo = {
-    [key: string]: Student | Advisor
+    [key: string]: StudentData | AdvisorData
 }
 
 type General = {
     user_id: number
-    student_id: number
     name_: string
     surname: string
     email: string
     phone_number: string
 }
 
-type Student = {
+export type StudentData = {
+    student_id: number
     is_approved: boolean
     has_proposed: boolean
     semester: number
@@ -32,12 +32,12 @@ type Student = {
     latest_thesis_id: number
 } & General
 
-type Advisor = {
+export type AdvisorData = {
     department: string
     is_jury: boolean
 } & General
 
-type Jury = {
+export type JuryData = {
     department: string
     email: string
     institution: string

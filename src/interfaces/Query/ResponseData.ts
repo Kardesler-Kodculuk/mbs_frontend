@@ -20,11 +20,14 @@ export interface Advisors {
     advisors: number[];
 }
 
-export interface Theses {
-    theses: number[];
+export interface ThesesData {
+    thesis_id: number;
+    plagiarism_ratio: number;
+    thesis_topic: string;
+    due_date: number;
+    submission_date: number;
 }
 
 export interface Jury {
     jury: number[];
 }
-

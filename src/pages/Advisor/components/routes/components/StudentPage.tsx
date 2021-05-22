@@ -6,9 +6,11 @@ import CheckIcon from "@material-ui/icons/Check";
 import { UserTable } from "@mbs/components"
 import { TableRow, TableCell, IconButton } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
+import { Proposals } from "./Proposals"
+import { ManagedStudents } from "../ManagedStudents"
 
 
-export function AdvisorProposal() {
+export function StudentPage() {
     const [load, setLoad] = useState<boolean>(true)
     const [advisors, setAdvisors] = useState<AdvisorData[] | null>(null)
     const [recommendations, setRecommendations] = useState<Recommendation[] | null>(null)
@@ -37,7 +39,7 @@ export function AdvisorProposal() {
             if (recommendations) {
                 console.log(recommendations)
                 await queryContext?.queryInfo<AdvisorData>("advisors", recommendations?.map((r => r.advisor_id)))
-                    .then(data => { setAdvisors(data); console.log(advisors) }).then(() => { })
+                    .then(data => { setAdvisors(data); }).then(() => { })
                     .catch((err) => { console.log(err.response) })
             }
         }
@@ -63,22 +65,9 @@ export function AdvisorProposal() {
             {userContext?.user?.student?.has_proposed ? (
                 <Alert severity="info">You already proposed to an advisor, please wait for response!</Alert>
             ) : (
-                <UserTable title={"Previously Uploaded Advisors"}>
-                    {
-                        advisors?.map((advisor) =>
-                            <TableRow key={"table_row_" + advisor.name_}>
-                                <TableCell>
-                                    <IconButton
-                                        onClick={() => handleProposal(advisor)}>
-                                        <CheckIcon color="primary" />
-                                    </IconButton>
-                                </TableCell>
-                                <TableCell component="th" scope="row" align="right">
-                                    {advisor.name_ + " " + advisor.surname}
-                                </TableCell>
-                            </TableRow>
-                        )
-                    }
+                <UserTable title={"Previously Uploaded Students"}>
+                    <ManagedStudents />
+                    <Proposals />
                 </UserTable>
             )}
         </div>
