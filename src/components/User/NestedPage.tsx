@@ -7,12 +7,13 @@ type props = {
 
 export function NestedPage(props: props) {
     const contents = props.pages.map((page: { link: string, component: React.FC }, i: number) => (
-        <Route path={props.to + page.link} key={`content_${ i }`} render={() => <page.component />}></Route>
+        <Route path={props.to + page.link} key={`nested_content_${ i }_${ props.to }`} render={() => <page.component />}></Route>
     ));
 
     return (
-        <div>
+
             <Switch>{contents}</Switch>
-        </div>
+ 
+    
     );
 }

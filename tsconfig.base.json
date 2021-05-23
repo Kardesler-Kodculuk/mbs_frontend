@@ -31,6 +31,7 @@
       "@mbs/pages":["pages"],
       "@mbs/interfaces":["interfaces"],
       "@mbs/routes":["routes"],
+      "@mbs/services":["services"],
       "@mbs/services*":["services/*"],
       "@mbs/utils":["utils"],
     }

@@ -1,33 +1,25 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState, useContext } from "react";
-import { UserContext, QueryContext, AlertContext } from "@mbs/contexts";
+import { useEffect, useState } from "react";
+import { useStudent, useQuery } from "@mbs/services"
 import { Students, StudentData } from "@mbs/interfaces"
 import OpenInNewIcon from "@material-ui/icons/OpenInNew";
-import { UserTable } from "@mbs/components"
 import { TableRow, TableCell, IconButton, Button } from "@material-ui/core";
-import Alert from "@material-ui/lab/Alert";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useRouteMatch } from "react-router-dom";
+
 export function ManagedStudents() {
     const [load, setLoad] = useState<boolean>(true)
     const [managed, setManaged] = useState<Students | null>(null)
     const [students, setStudents] = useState<StudentData[] | null>(null)
     const [defenders, setDefenders] = useState<StudentData[] | null>(null)
     const [defendingStudents, setDefendingStudents] = useState<StudentData[] | null>(null)
-    const queryContext = useContext(QueryContext)
-    const userContext = useContext(UserContext)
-    const alertContext = useContext(AlertContext)
-    let path = useLocation()
-    useEffect(() => {
-        if (alertContext) {
-            alertContext.createAlert("success", "advisor_proposal", "Proposal has been sent.", "success")
-            alertContext.createAlert("alert", "advisor_proposal", "Please enter your thesis topic before proposing to an advisor.", "warning")
-        }
-    }, [])
+    const query = useQuery()
+    const selectedStudent = useStudent()
+    let path = useRouteMatch()
 
     useEffect(() => {
         async function fetchProposals() {
-            await queryContext?.queryID<Students>("students")
-                .then(data => { setManaged(data) })
+            await query?.queryID<Students>("students")
+                .then(data => { setManaged(data); console.log(data) })
                 .catch((err) => { })
         }
         fetchProposals()
@@ -36,27 +28,25 @@ export function ManagedStudents() {
     useEffect(() => {
         async function fetchStudents() {
             if (managed) {
-                await queryContext?.queryInfo<StudentData>("students", managed.students.filter((student) => managed.defenders?.includes(student)))
-                    .then(data => { setDefendingStudents(data); console.log(data) }).then(() => { })
+                await query?.queryInfo<StudentData>("students", managed.students.filter((student) => managed.defenders?.includes(student)))
+                    .then(data => { setDefendingStudents(data); }).then(() => { })
                     .catch((err) => { console.log(err.response) })
-                await queryContext?.queryInfo<StudentData>("students", managed.students.filter((student) => !managed.defenders?.includes(student)))
-                    .then(data => { setStudents(data); console.log(data) }).then(() => { })
+                await query?.queryInfo<StudentData>("students", managed.students.filter((student) => !managed.defenders?.includes(student)))
+                    .then(data => { setStudents(data); }).then(() => { })
                     .catch((err) => { console.log(err.response) })
-                await queryContext?.queryInfo<StudentData>("students", managed.defenders.filter((student) => !managed.students?.includes(student)))
-                    .then(data => { setDefenders(data); console.log(data) }).then(() => { })
+
+                await query?.queryInfo<StudentData>("students", managed.defenders.filter((student) => !managed.students?.includes(student)))
+                    .then(data => { setDefenders(data); }).then(() => { })
                     .catch((err) => { console.log(err.response) })
             }
         }
         fetchStudents()
     }, [managed])
-    console.log(path)
-    const handleManage = async (student: StudentData) => {
 
+    const handleSelection = (student: StudentData) => {
+        selectedStudent?.setStudent(student)
     }
 
-    const handleEvaluate = async (student: StudentData) => {
-
-    }
     return (
         <>
             {
@@ -68,10 +58,10 @@ export function ManagedStudents() {
                         </TableCell>
                         <TableCell align="right">
                             <IconButton
-                                component={Link} to={path + "manage/" + student.user_id}>
+                                component={Link} to={path.url + "/" + student.user_id} onClick={() => handleSelection(student)}>
                                 <OpenInNewIcon color="primary" />
                             </IconButton>
-                            <Button variant="contained" color="primary" component={Link} to={path + "evaluate/" + student.user_id}>
+                            <Button variant="contained" color="primary" component={Link} to={path.url + "/evaluate/" + student.user_id} onClick={() => handleSelection(student)}>
                                 {"Evaluate"}
                             </Button>
                         </TableCell>
@@ -85,7 +75,7 @@ export function ManagedStudents() {
                             {student.name_ + " " + student.surname}
                         </TableCell>
                         <TableCell align="right">
-                            <Button variant="contained" color="primary" component={Link} to={path + "evaluate/" + student.user_id}>
+                            <Button variant="contained" color="primary" component={Link} to={path.url + "/evaluate/" + student.user_id} onClick={() => handleSelection(student)}>
                                 {"Evaluate"}
                             </Button>
                         </TableCell>
@@ -101,7 +91,7 @@ export function ManagedStudents() {
                         </TableCell>
                         <TableCell align="right">
                             <IconButton
-                                component={Link} to={path + "manage/" + student.user_id}>
+                                component={Link} to={path.url + "/" + student.user_id} onClick={() => handleSelection(student)}>
                                 <OpenInNewIcon color="primary" />
                             </IconButton>
                         </TableCell>

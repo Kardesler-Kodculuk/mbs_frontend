@@ -35,8 +35,8 @@ export function UserTable(props: props) {
     return (
         <Card className={classes.root} >
             <Box className={classes.box} left="80%" position="relative">
-                {props.buttons?.map((button) =>
-                    <Button variant="contained" color="primary">
+                {props.buttons?.map((button, i) =>
+                    <Button variant="contained" color="primary" key={"user_table_buttons_" + i}>
                         {button.value}
                     </Button>
                 )}
@@ -45,7 +45,6 @@ export function UserTable(props: props) {
                 <Typography variant="h3" className={classes.title} color="primary">
                     {props.title}
                 </Typography>
-
 
 
                 <Container>

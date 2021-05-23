@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
-import { UserContext, QueryContext, AlertContext } from "@mbs/contexts";
+import React, { useEffect, useState } from "react";
+import { useQuery, useAlert, useUser } from "@mbs/services"
 import { useForm } from "@mbs/hooks/useForm"
 import { Card, CardContent, Typography, makeStyles, Divider, Container, TextField, Grid, Button } from "@material-ui/core";
 
@@ -21,9 +21,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export function TopicForm() {
-    const queryContext = useContext(QueryContext)
-    const userContext = useContext(UserContext)
-    const alertContext = useContext(AlertContext)
+    const query = useQuery()
+    const user = useUser()
+    const alert = useAlert()
     const classes = useStyles()
     const [load, setLoad] = useState(true)
     const form = useForm<string>({
@@ -33,24 +33,24 @@ export function TopicForm() {
     })
 
     useEffect(() => {
-        if (alertContext) {
-            alertContext.createAlert("success", "topic_form", "Thesis Topic Has been submitted", "success")
+        if (alert) {
+            alert.createAlert("success", "topic_form", "Thesis Topic Has been submitted", "success")
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [load])
 
 
     const handleSubmit = async (e: React.SyntheticEvent): Promise<void> => {
-        if (alertContext && queryContext && userContext?.user?.student) {
+        if (alert && query && user?.user?.student) {
             e.preventDefault()
-            await queryContext.updateInfo("students", userContext?.user?.student?.student_id, form.values)
-                .then(() => alertContext.openAlert("success", "topic_form"))
+            await query.updateInfo("students", user?.user?.student?.student_id, form.values)
+                .then(() => alert.openAlert("success", "topic_form"))
                 .catch((err) => console.log(err))
-            await userContext.getUser()
+            await user.getUser()
             setLoad(!load)
         }
     }
-    if (!userContext) {
+    if (!user) {
         return <div />
     }
 
@@ -58,7 +58,7 @@ export function TopicForm() {
 
         <Card className={classes.root}>
             <CardContent>
-                <Typography variant="h3" className={classes.title} color="primary">
+                <Typography variant="h3" className={classes.title} color="primary" noWrap>
                     Submit Thesis Topic
 					</Typography>
                 <Divider />
@@ -73,7 +73,7 @@ export function TopicForm() {
                             <TextField
                                 className={classes.textField}
                                 required
-                                label={userContext?.user?.student?.thesis_topic}
+                                label={user?.user?.student?.thesis_topic}
                                 color="primary"
                                 onChange={(e) => form.setValues("thesis_topic", e.target.value)}
                             />

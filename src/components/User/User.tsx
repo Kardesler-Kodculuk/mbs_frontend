@@ -3,7 +3,7 @@ import { Container, AppBar, Toolbar, makeStyles, CssBaseline, Typography, IconBu
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import ExitToAppOutlinedIcon from "@material-ui/icons/ExitToAppOutlined";
 import { useRouteMatch } from "react-router-dom";
-import { UserContext, AuthContext, AlertContext } from "@mbs/contexts"
+import { useAuth, useAlert, useUser } from "@mbs/services"
 import { Sidebar, Content } from "./components"
 
 
@@ -36,17 +36,17 @@ type props = {
 
 export function User(props: props) {
     const classes = useStyles();
-    const userContext = useContext(UserContext)
-    const authContext = useContext(AuthContext)
-    const alertContext = useContext(AlertContext)
+    const user = useUser()
+    const auth = useAuth()
+    const alert = useAlert()
     let { path, url } = useRouteMatch()
 
 
     const handleLogout = async (e: React.SyntheticEvent): Promise<void> => {
         e.preventDefault()
-        await authContext?.signOut()
+        await auth?.signOut()
     }
-    if (!alertContext?.createAlert) {
+    if (!alert?.createAlert) {
         return <div />
     }
 
@@ -58,13 +58,12 @@ export function User(props: props) {
                     <Toolbar>
                         <IconButton
                             edge="start"
-                            color="inherit"
-                            aria-label="open drawer">
+                            color="inherit">
                             <AccountCircleIcon />
                         </IconButton>
                         <Typography variant="h6" className={classes.title}>
                             MBS
-							</Typography>
+						</Typography>
                         <div className={classes.logout}>
                             <IconButton color="inherit" onClick={handleLogout}>
                                 <ExitToAppOutlinedIcon />
@@ -72,7 +71,7 @@ export function User(props: props) {
                         </div>
                     </Toolbar>
                 </AppBar>
-                {userContext === null ? (
+                {user === null ? (
                     <div></div>
                 ) : (
                     <Sidebar
@@ -87,7 +86,7 @@ export function User(props: props) {
                     </Grid>
                 </main>
             </div>
-            {alertContext?.PageAlert ? alertContext?.PageAlert() : null}
+            {alert?.PageAlert ? alert?.PageAlert() : null}
         </Container>
     );
 }

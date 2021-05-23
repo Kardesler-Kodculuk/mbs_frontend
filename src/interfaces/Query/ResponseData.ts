@@ -31,3 +31,11 @@ export interface ThesesData {
 export interface Jury {
     jury: number[];
 }
+
+export interface DissertationData {
+    student_id: number;
+    jury_ids: number[];
+    jury_date: number;
+    status: string;
+}
+

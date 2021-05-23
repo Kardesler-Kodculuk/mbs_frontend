@@ -1,24 +1,24 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useContext } from "react";
-import { UserContext, QueryContext, AlertContext } from "@mbs/contexts";
+import { useQuery, } from "@mbs/services"
 import { ThesesData } from "@mbs/interfaces"
 import CheckIcon from "@material-ui/icons/Check";
 import { UserTable } from "@mbs/components"
 import { TableRow, TableCell, IconButton, CircularProgress, Box, Typography } from "@material-ui/core";
+import {PlagiarismRatio} from "@mbs/components"
 import Alert from "@material-ui/lab/Alert";
 
 export function Theses() {
     const [load, setLoad] = useState<boolean>(true)
     const [theses, setTheses] = useState<number[] | null>(null)
     const [thesesData, setThesesData] = useState<ThesesData[] | null>(null)
-    const queryContext = useContext(QueryContext)
-    const userContext = useContext(UserContext)
-    const alertContext = useContext(AlertContext)
+    const query = useQuery()
+
 
 
     useEffect(() => {
         async function fetchTheses() {
-            await queryContext?.queryID<number[]>("theses")
+            await query?.queryID<number[]>("theses")
                 .then(data => { setTheses(data); })
                 .catch((err) => { })
         }
@@ -29,7 +29,7 @@ export function Theses() {
         async function fetchMetaData() {
             if (theses) {
                 console.log(theses)
-                await queryContext?.queryInfo<ThesesData>("theses/metadata", theses)
+                await query?.queryInfo<ThesesData>("theses/metadata", theses)
                     .then(data => { setThesesData(data); }).then(() => { })
                     .catch((err) => { console.log(err.response) })
             }
@@ -53,30 +53,5 @@ export function Theses() {
                 }
             </UserTable>
         </div>
-    );
-}
-
-type plagiarism = {
-    ratio: number
-}
-function PlagiarismRatio(props: plagiarism) {
-    return (
-        <Box position="relative" display="inline-flex">
-            <CircularProgress variant="determinate" color={props.ratio > 12 ? "secondary" : "primary"} value={props.ratio} />
-            <Box
-                top={0}
-                left={0}
-                bottom={0}
-                right={0}
-                position="absolute"
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-            >
-                <Typography variant="caption" component="div" color="textSecondary">{`${ Math.round(
-                    props.ratio,
-                ) }%`}</Typography>
-            </Box>
-        </Box>
     );
 }

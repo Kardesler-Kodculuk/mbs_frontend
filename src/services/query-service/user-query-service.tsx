@@ -14,7 +14,7 @@ export async function queryID<T>(endPoint: string): Promise<T> {
         .then((res) => res.data)
 }
 
-export async function queryInfo<T>(endPoint: string, IDList: number[], postfix?: string): Promise<T[]> {
+export async function queryInfo<T>(endPoint: string, IDList: number[]): Promise<T[]> {
     let request: Promise<AxiosResponse<T>>[] = IDList.map((id) => axios.get<T>(`${ MBS?.url }${ endPoint }/${ id }`, { withCredentials: true }))
     return await axios.all([...request]).then(axios.spread((...res) => res.map((r) => r.data)))
 }

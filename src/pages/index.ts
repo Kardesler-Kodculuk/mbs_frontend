@@ -1,4 +1,6 @@
-export *  from "./Advisor/Advisor"
+export * from "./Advisor/Advisor"
+export * from "./Jury/Jury"
+export * from "./DBR/DBR"
 export * from "./Student/Student"
 export * from "./Landing/Landing"
 export * from "./Login/Login"

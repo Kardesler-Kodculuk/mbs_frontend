@@ -22,6 +22,7 @@ type General = {
 export type StudentData = {
     student_id: number
     is_approved: boolean
+    is_thesis_sent: boolean
     has_proposed: boolean
     semester: number
     program_name: string
