@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from "react";
+import { useEffect, useState, forwardRef } from "react";
 import { useQuery, useAlert } from "@mbs/services";
 import { JuryData, Jury } from "@mbs/interfaces";
 import {
@@ -93,9 +93,6 @@ export function JuryProposal() {
 	const alert = useAlert();
 	const query = useQuery();
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-	const [open, setOpen] = useState(false);
-	const [open_, setOpen_] = useState(false);
-	const [load, setLoad] = useState(true);
 	const [juryID, setJuryID] = useState<Jury | null>(null);
 	const [jurySelection, setJurySelection] = useState<JuryData | null>(null);
 	const [jurySelectionID, setJurySelectionID] = useState<number>(0);
@@ -104,7 +101,7 @@ export function JuryProposal() {
 	const selectedOutsideJury = useArray<outsideJury>({ compare: compareOutside });
 	const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
 
-	const handleOutsideSubmit = async (e: React.SyntheticEvent): Promise<void> => {
+	const handleOutsideSubmit = (e: React.SyntheticEvent): void => {
 		e.preventDefault();
 		selectedOutsideJury.addValue({
 			name_: form.values["name_"],
@@ -113,16 +110,14 @@ export function JuryProposal() {
 			institution: form.values["institution"],
 			phone_number: form.values["phone_number"],
 		});
-		handleCloseOutsideJury();
 	};
-	const handleFacultySubmit = async (e: React.SyntheticEvent): Promise<void> => {
+	const handleFacultySubmit = (e: React.SyntheticEvent): void => {
 		e.preventDefault();
 		console.log(jurySelection);
 		if (jurySelection) {
 			selectableJury.removeValue(jurySelection);
 			selectedJury.addValue(jurySelection);
 		}
-		handleCloseJury();
 	};
 
 	const handleFacultyRemove = (jury: JuryData): void => {
@@ -141,20 +136,6 @@ export function JuryProposal() {
 	const handleClose = () => {
 		setAnchorEl(null);
 	};
-	const handleClickOpenOutsideJury = () => {
-		setOpen(true);
-	};
-
-	const handleCloseOutsideJury = () => {
-		setOpen(false);
-	};
-	const handleClickOpenJury = () => {
-		setOpen_(true);
-	};
-
-	const handleCloseJury = () => {
-		setOpen_(false);
-	};
 
 	const handleSelection = (event: React.ChangeEvent<{ value: unknown }>) => {
 		console.log(event.target.value);
@@ -164,10 +145,6 @@ export function JuryProposal() {
 			];
 		setJurySelection(jury);
 	};
-
-	useEffect(() => {
-		console.log(selectedOutsideJury.values);
-	}, [selectedOutsideJury.values]);
 
 	useEffect(() => {
 		async function fetchJury() {
@@ -231,78 +208,80 @@ export function JuryProposal() {
 								keepMounted
 								open={Boolean(anchorEl)}
 								onClose={handleClose}>
-								<CustomDialog
-									componentName={"Faculty Member"}
-									onClick={handleClose}
-									component={MenuItem}
-									title={"Faculty Members"}
-									submit={{ value: "Add Member", handler: handleFacultySubmit }}>
-									<FormControl>
-										<Box display="flex" justifyContent="center">
-											{selectableJury.values.length > 0 ? (
-												<Select
-													value={jurySelectionID}
-													onChange={handleSelection}
-													input={<Input />}
-													className={classes.selection}>
-													{selectableJury.values.map((member, i) => {
-														return (
-															<MenuItem
-																value={member.jury_id}
-																key={
-																	"select_list_" + member.jury_id
-																}>{`${member.name_} ${member.surname}`}</MenuItem>
-														);
-													})}
-												</Select>
-											) : null}
-										</Box>
-									</FormControl>
-								</CustomDialog>
-								<CustomDialog
-									componentName={"Out-Faculty Member"}
-									onClick={handleClose}
-									component={MenuItem}
-									title={"Out-Faculty Member Details"}
-									submit={{ value: "Add Member", handler: handleOutsideSubmit }}>
-									<FormControl>
-										<TextField
-											autoFocus
-											margin="dense"
-											required
-											label="Name"
-											onChange={(e) => {
-												form.setValues("name_", e.target.value);
-											}}
-											fullWidth
-										/>
-										<TextField
-											margin="dense"
-											label="Surname"
-											onChange={(e) => form.setValues("surname", e.target.value)}
-											fullWidth
-										/>
-										<TextField
-											margin="dense"
-											label="Email"
-											type="email"
-											onChange={(e) => form.setValues("email", e.target.value)}
-											fullWidth
-										/>
-										<TextField
-											margin="dense"
-											label="Institution"
-											onChange={(e) => form.setValues("institution", e.target.value)}
-											fullWidth
-										/>
-										<TextField
-											margin="dense"
-											label="Phone Number"
-											onChange={(e) => form.setValues("phone_number", e.target.value)}
-											fullWidth
-										/>
-									</FormControl>
-								</CustomDialog>
+								<div>
+									<CustomDialog
+										componentName={"Faculty Member"}
+										component={MenuItem}
+										onClick={handleClose}
+										title={"Faculty Members"}
+										submit={{ value: "Add Member", handler: handleFacultySubmit }}>
+										<FormControl>
+											<Box display="flex" justifyContent="center">
+												{selectableJury.values.length > 0 ? (
+													<Select
+														value={jurySelectionID}
+														onChange={handleSelection}
+														input={<Input />}
+														className={classes.selection}>
+														{selectableJury.values.map((member, i) => {
+															return (
+																<MenuItem
+																	value={member.jury_id}
+																	key={
+																		"select_list_" + member.jury_id
+																	}>{`${member.name_} ${member.surname}`}</MenuItem>
+															);
+														})}
+													</Select>
+												) : null}
+											</Box>
+										</FormControl>
+									</CustomDialog>
+									<CustomDialog
+										component={MenuItem}
+										componentName={"Out-Faculty Member"}
+										onClick={handleClose}
+										title={"Out-Faculty Member Details"}
+										submit={{ value: "Add Member", handler: handleOutsideSubmit }}>
+										<FormControl>
+											<TextField
+												autoFocus
+												margin="dense"
+												required
+												label="Name"
+												onChange={(e) => {
+													form.setValues("name_", e.target.value);
+												}}
+												fullWidth
+											/>
+											<TextField
+												margin="dense"
+												label="Surname"
+												onChange={(e) => form.setValues("surname", e.target.value)}
+												fullWidth
+											/>
+											<TextField
+												margin="dense"
+												label="Email"
+												type="email"
+												onChange={(e) => form.setValues("email", e.target.value)}
+												fullWidth
+											/>
+											<TextField
+												margin="dense"
+												label="Institution"
+												onChange={(e) => form.setValues("institution", e.target.value)}
+												fullWidth
+											/>
+											<TextField
+												margin="dense"
+												label="Phone Number"
+												onChange={(e) => form.setValues("phone_number", e.target.value)}
+												fullWidth
+											/>
+										</FormControl>
+									</CustomDialog>
+								</div>
 							</Menu>
 						</Box>
 					</Box>

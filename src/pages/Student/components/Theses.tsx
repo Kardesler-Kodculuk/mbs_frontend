@@ -39,7 +39,7 @@ export function Theses() {
 
     return (
         <div>
-            <UserTable title={"Previously Uploaded Theses"} buttons={[{ value: "Upload New", handler: () => { } }]}>
+            <UserTable title={"Theses"} buttons={[{ value: "Upload New", handler: () => { } }]}>
                 {
                     thesesData?.map((theses) =>
                         <TableRow key={"table_row_" + theses.thesis_id}>

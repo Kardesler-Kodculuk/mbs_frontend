@@ -51,7 +51,7 @@ export function ManagedStudents() {
         <>
             {
                 defendingStudents?.map((student) =>
-                    <TableRow key={"table_row_" + student.name_}>
+                    <TableRow key={"table_row_" + student.name_+ "_" + student.user_id}>
 
                         <TableCell component="th" scope="row">
                             {student.name_ + " " + student.surname}
@@ -70,7 +70,7 @@ export function ManagedStudents() {
             }
             {
                 defenders?.map((student) =>
-                    <TableRow key={"table_row_" + student.name_}>
+                    <TableRow key={"table_row_" + student.name_+ "_" + student.user_id}>
                         <TableCell component="th" scope="row">
                             {student.name_ + " " + student.surname}
                         </TableCell>
@@ -85,7 +85,7 @@ export function ManagedStudents() {
             }
             {
                 students?.map((student) =>
-                    <TableRow key={"table_row_" + student.name_}>
+                    <TableRow key={"table_row_" + student.name_+ "_" + student.user_id}>
                         <TableCell component="th" scope="row" >
                             {student.name_ + " " + student.surname}
                         </TableCell>

@@ -55,7 +55,7 @@ export function TheseData(props: props) {
                         }
                     </Box>
                 </Typography>
-                <Box marginTop="2.5em" m={1}>
+                <Box marginTop="3em" m={1}>
                     <PlagiarismRatio ratio={studentContext?.theses?.plagiarism_ratio} />
                 </Box>
             </Box>

@@ -4,7 +4,7 @@ import { useStudent } from "@mbs/services";
 import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
 const useStyles = makeStyles((theme) => ({
 	root: {
-		minWidth: 375,
+		minWidth: 480,
 	},
 	title: {
 		fontSize: 24,
@@ -13,17 +13,29 @@ const useStyles = makeStyles((theme) => ({
 	body: {
 		fontSize: 18,
 	},
-	button: {
+	download: {
+		padding: 20,
+	},
+	send_thesis: {
+		marginTop: 5,
 		color: "white",
-		backgroundColor: "#ff9100",
+		fontWeight: 70,
+		backgroundColor: "#f44336",
 		marginRight: theme.spacing(2),
 		marginLeft: theme.spacing(2),
 		"&:hover": {
-			backgroundColor: "#ffa733",
+			backgroundColor: "#f6685e",
 		},
 	},
-	download: {
-		padding: 20,
+	send_results: {
+		marginTop: 5,
+		color: "white",
+		backgroundColor: "#4caf50 ",
+		marginRight: theme.spacing(2),
+		marginLeft: theme.spacing(2),
+		"&:hover": {
+			backgroundColor: "#6fbf73",
+		},
 	},
 }));
 
@@ -36,6 +48,7 @@ export function Thesis() {
 			status: student?.student?.is_thesis_sent ? "SENT" : "UNSENT",
 		},
 	];
+	
 	if (!student?.theses) {
 		return null;
 	}
@@ -53,12 +66,12 @@ export function Thesis() {
 				display="flex"
 				justifyContent="center"
 				alignItems="center">
-				<Button variant="contained" className={classes.button}>
+				<Button variant="contained" className={classes.send_results}>
 					{" "}
-					Update Topic
+					Send Thesis Copy to GSES
 				</Button>
-				<Button variant="contained" className={classes.button}>
-					Submit Copy
+				<Button variant="contained" className={classes.send_thesis}>
+					Send Results to the GSES
 				</Button>
 			</Box>
 		</Card>

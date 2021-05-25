@@ -9,7 +9,7 @@ export function StudentPage() {
 
     return (
         <div>
-            <UserTable title={"Previously Uploaded Students"}>
+            <UserTable title={"Students"}>
                 <ManagedStudents />
             </UserTable>
         </div>

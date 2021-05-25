@@ -1,60 +1,81 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useContext, useEffect, useState } from 'react'
-import { QueryContext, StudentContext } from "@mbs/contexts"
-import { StudentData, ThesesData, DissertationData } from "@mbs/interfaces"
-import { MBS } from "@mbs/utils"
-
+import React, { useContext, useEffect, useState } from "react";
+import { QueryContext, StudentContext } from "@mbs/contexts";
+import { StudentData, ThesesData, DissertationData, JuryData, AdvisorData } from "@mbs/interfaces";
+import { MBS } from "@mbs/utils";
 
 type props = {
-    children: React.ReactNode
-}
+	children: React.ReactNode;
+};
 
 export const StudentProvider = (props: props) => {
-    const [student, setStudent] = useState<StudentData | null>(null)
-    const [theses, setTheses] = useState<ThesesData | null>(null)
-    const [dissertation, setDissertation] = useState<DissertationData | null>(null)
+	const [student, setStudent] = useState<StudentData | null>(null);
+	const [advsior, setAdvisor] = useState<AdvisorData | null>(null);
+	const [theses, setTheses] = useState<ThesesData | null>(null);
+	const [dissertation, setDissertation] = useState<DissertationData | null>(null);
+	const [jury, setJury] = useState<JuryData[] | null>(null);
 
-    const queryContext = useContext(QueryContext)
+	const query = useContext(QueryContext);
 
-    useEffect(() => {
-        setTheses(null)
-        async function fetchThese() {
-            console.log(student)
-            if (student?.latest_thesis_id && student?.latest_thesis_id > 0) {
-                await queryContext?.queryInfo<ThesesData>("theses/metadata", [student?.latest_thesis_id])
-                    .then(data => { setTheses(data[0]); console.log(data) })
-                    .catch((err) => { })
-            }
-        }
-        fetchThese()
-    }, [student])
+	useEffect(() => {
+		setTheses(null);
+		async function fetchThese() {
+			if (student?.latest_thesis_id && student?.latest_thesis_id > 0) {
+				await query
+					?.queryInfo<ThesesData>("theses/metadata", [student?.latest_thesis_id])
+					.then((data) => {
+						setTheses(data[0]);
+					})
+					.catch((err) => {});
+			}
+		}
+		fetchThese();
+	}, [student]);
 
-    useEffect(() => {
-        setDissertation(null)
-        async function fetchDissertation() {
-            if (student?.latest_thesis_id) {
-                await queryContext?.queryInfo<DissertationData>("dissertation", [student?.student_id])
-                    .then(data => { setDissertation(data[0]); console.log(data) })
-                    .catch((err) => { })
-            }
-        }
-        fetchDissertation()
-    }, [student])
+	useEffect(() => {
+		setDissertation(null);
+		async function fetchDissertation() {
+			if (student?.latest_thesis_id) {
+				await query
+					?.queryInfo<DissertationData>("dissertation", [student?.student_id])
+					.then((data) => {
+						setDissertation(data[0]);
+					})
+					.catch((err) => {});
+			}
+		}
+		fetchDissertation();
+	}, [student]);
 
-    const value = {
-        student,
-        theses,
-        dissertation,
-        setStudent
-    }
+	useEffect(() => {
+		async function fetchJury() {
+			if (dissertation?.jury_ids) {
+				await query
+					?.queryInfo<JuryData>("jury", dissertation?.jury_ids)
+					.then((data) => {
+						setJury(data);
+					})
+					.then(() => {})
+					.catch((err) => {
+						console.log(err.response);
+					});
+			}
+		}
+		fetchJury();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [dissertation]);
 
-    return (
-        <StudentContext.Provider value={value}>
-            {props.children}
-        </StudentContext.Provider>
-    )
-}
+	const value = {
+		student,
+		theses,
+		dissertation,
+		jury,
+		setStudent,
+	};
+
+	return <StudentContext.Provider value={value}>{props.children}</StudentContext.Provider>;
+};
 
 export const useStudent = () => {
-    return useContext(StudentContext)
-}
+	return useContext(StudentContext);
+};

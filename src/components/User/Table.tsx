@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 	root_small: {
 		marginTop: 2,
 		border: "none",
-		boxShadow: "none"
+		boxShadow: "none",
 	},
 	table: {
 		margin: theme.spacing(0.5),

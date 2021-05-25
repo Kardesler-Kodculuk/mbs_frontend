@@ -52,7 +52,7 @@ export function Proposals() {
         <>
             {
                 students?.map((student) =>
-                    <TableRow key={"table_row_" + student.name_}>
+                    <TableRow key={"table_row_" + student.name_+ "_" + student.user_id}>
                         <TableCell>
                             <IconButton
                                 onClick={() => handleApprove(student)}>
