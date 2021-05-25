@@ -94,7 +94,6 @@ export function JuryProposal() {
 	const query = useQuery();
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const [juryID, setJuryID] = useState<Jury | null>(null);
-	const [jurySelection, setJurySelection] = useState<JuryData | null>(null);
 	const [jurySelectionID, setJurySelectionID] = useState<number>(0);
 	const selectableJury = useArray<JuryData>({ compare: compare });
 	const selectedJury = useArray<JuryData>({ compare: compare });
@@ -110,13 +109,21 @@ export function JuryProposal() {
 			institution: form.values["institution"],
 			phone_number: form.values["phone_number"],
 		});
+		form.reset({
+			name_: "",
+			surname: "",
+			email: "",
+			institution: "",
+			phone_number: "",
+		});
 	};
 	const handleFacultySubmit = (e: React.SyntheticEvent): void => {
 		e.preventDefault();
-		console.log(jurySelection);
-		if (jurySelection) {
-			selectableJury.removeValue(jurySelection);
-			selectedJury.addValue(jurySelection);
+		let jury: JuryData =
+			selectableJury.values[selectableJury.values.findIndex((e) => e.jury_id === jurySelectionID)];
+		if (jury) {
+			selectableJury.removeValue(jury);
+			selectedJury.addValue(jury);
 		}
 	};
 
@@ -139,12 +146,18 @@ export function JuryProposal() {
 
 	const handleSelection = (event: React.ChangeEvent<{ value: unknown }>) => {
 		console.log(event.target.value);
-		let jury: JuryData =
-			selectableJury.values[
-				selectableJury.values.findIndex((e) => e.jury_id === event.target.value)
-			];
-		setJurySelection(jury);
+		setJurySelectionID(event.target.value as number);
 	};
+
+	useEffect(() => {
+		if (selectableJury.values.length > 0) {
+			setJurySelectionID(selectableJury.values[0].jury_id);
+		}
+	}, [selectableJury.values]);
+
+	useEffect(() => {
+		console.log(jurySelectionID);
+	}, [jurySelectionID]);
 
 	useEffect(() => {
 		async function fetchJury() {
@@ -252,31 +265,40 @@ export function JuryProposal() {
 												onChange={(e) => {
 													form.setValues("name_", e.target.value);
 												}}
+												value={form.values["name_"]}
 												fullWidth
 											/>
 											<TextField
 												margin="dense"
 												label="Surname"
+												required
 												onChange={(e) => form.setValues("surname", e.target.value)}
+												value={form.values["surname"]}
 												fullWidth
 											/>
 											<TextField
 												margin="dense"
 												label="Email"
 												type="email"
+												required
 												onChange={(e) => form.setValues("email", e.target.value)}
+												value={form.values["email"]}
 												fullWidth
 											/>
 											<TextField
 												margin="dense"
 												label="Institution"
+												required
 												onChange={(e) => form.setValues("institution", e.target.value)}
+												value={form.values["institution"]}
 												fullWidth
 											/>
 											<TextField
 												margin="dense"
 												label="Phone Number"
+												required
 												onChange={(e) => form.setValues("phone_number", e.target.value)}
+												value={form.values["phone_number"]}
 												fullWidth
 											/>
 										</FormControl>

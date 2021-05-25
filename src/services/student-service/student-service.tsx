@@ -10,7 +10,7 @@ type props = {
 
 export const StudentProvider = (props: props) => {
 	const [student, setStudent] = useState<StudentData | null>(null);
-	const [advsior, setAdvisor] = useState<AdvisorData | null>(null);
+	const [advisor, setAdvisor] = useState<AdvisorData | null>(null);
 	const [theses, setTheses] = useState<ThesesData | null>(null);
 	const [dissertation, setDissertation] = useState<DissertationData | null>(null);
 	const [jury, setJury] = useState<JuryData[] | null>(null);
@@ -30,6 +30,21 @@ export const StudentProvider = (props: props) => {
 			}
 		}
 		fetchThese();
+	}, [student]);
+
+	useEffect(() => {
+		setDissertation(null);
+		async function fetchAdvisor() {
+			if (student?.latest_thesis_id) {
+				await query
+					?.queryInfo<AdvisorData>("students/advisor", [student?.student_id])
+					.then((data) => {
+						setAdvisor(data[0]);
+					})
+					.catch((err) => {});
+			}
+		}
+		fetchAdvisor();
 	}, [student]);
 
 	useEffect(() => {
