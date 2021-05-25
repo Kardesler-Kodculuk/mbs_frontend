@@ -12,10 +12,6 @@ import {
 	Select,
 	Input,
 	Menu,
-	Dialog,
-	DialogContent,
-	DialogTitle,
-	DialogActions,
 	Button,
 	FormControl,
 	TableRow,
@@ -64,32 +60,6 @@ const useStyles = makeStyles((theme) => ({
 	selection: {
 		margin: theme.spacing(2),
 		minWidth: 200,
-	},
-	title: {
-		fontSize: 24,
-		marginBottom: 12,
-	},
-	body: {
-		fontSize: 18,
-	},
-	cancel: {
-		color: "white",
-		fontWeight: 70,
-		backgroundColor: "#f44336",
-		marginRight: theme.spacing(2),
-		marginLeft: theme.spacing(2),
-		"&:hover": {
-			backgroundColor: "#f6685e",
-		},
-	},
-	submit_dialog: {
-		color: "white",
-		backgroundColor: "#4caf50 ",
-		marginRight: theme.spacing(2),
-		marginLeft: theme.spacing(2),
-		"&:hover": {
-			backgroundColor: "#6fbf73",
-		},
 	},
 }));
 
@@ -268,27 +238,25 @@ export function JuryProposal() {
 									title={"Faculty Members"}
 									submit={{ value: "Add Member", handler: handleFacultySubmit }}>
 									<FormControl>
-										<DialogContent>
-											<Box display="flex" justifyContent="center">
-												{selectableJury.values.length > 0 ? (
-													<Select
-														value={jurySelectionID}
-														onChange={handleSelection}
-														input={<Input />}
-														className={classes.selection}>
-														{selectableJury.values.map((member, i) => {
-															return (
-																<MenuItem
-																	value={member.jury_id}
-																	key={
-																		"select_list_" + member.jury_id
-																	}>{`${member.name_} ${member.surname}`}</MenuItem>
-															);
-														})}
-													</Select>
-												) : null}
-											</Box>
-										</DialogContent>
+										<Box display="flex" justifyContent="center">
+											{selectableJury.values.length > 0 ? (
+												<Select
+													value={jurySelectionID}
+													onChange={handleSelection}
+													input={<Input />}
+													className={classes.selection}>
+													{selectableJury.values.map((member, i) => {
+														return (
+															<MenuItem
+																value={member.jury_id}
+																key={
+																	"select_list_" + member.jury_id
+																}>{`${member.name_} ${member.surname}`}</MenuItem>
+														);
+													})}
+												</Select>
+											) : null}
+										</Box>
 									</FormControl>
 								</CustomDialog>
 								<CustomDialog
@@ -298,43 +266,41 @@ export function JuryProposal() {
 									title={"Out-Faculty Member Details"}
 									submit={{ value: "Add Member", handler: handleOutsideSubmit }}>
 									<FormControl>
-										<DialogContent>
-											<TextField
-												autoFocus
-												margin="dense"
-												required
-												label="Name"
-												onChange={(e) => {
-													form.setValues("name_", e.target.value);
-												}}
-												fullWidth
-											/>
-											<TextField
-												margin="dense"
-												label="Surname"
-												onChange={(e) => form.setValues("surname", e.target.value)}
-												fullWidth
-											/>
-											<TextField
-												margin="dense"
-												label="Email"
-												type="email"
-												onChange={(e) => form.setValues("email", e.target.value)}
-												fullWidth
-											/>
-											<TextField
-												margin="dense"
-												label="Institution"
-												onChange={(e) => form.setValues("institution", e.target.value)}
-												fullWidth
-											/>
-											<TextField
-												margin="dense"
-												label="Phone Number"
-												onChange={(e) => form.setValues("phone_number", e.target.value)}
-												fullWidth
-											/>
-										</DialogContent>
+										<TextField
+											autoFocus
+											margin="dense"
+											required
+											label="Name"
+											onChange={(e) => {
+												form.setValues("name_", e.target.value);
+											}}
+											fullWidth
+										/>
+										<TextField
+											margin="dense"
+											label="Surname"
+											onChange={(e) => form.setValues("surname", e.target.value)}
+											fullWidth
+										/>
+										<TextField
+											margin="dense"
+											label="Email"
+											type="email"
+											onChange={(e) => form.setValues("email", e.target.value)}
+											fullWidth
+										/>
+										<TextField
+											margin="dense"
+											label="Institution"
+											onChange={(e) => form.setValues("institution", e.target.value)}
+											fullWidth
+										/>
+										<TextField
+											margin="dense"
+											label="Phone Number"
+											onChange={(e) => form.setValues("phone_number", e.target.value)}
+											fullWidth
+										/>
 									</FormControl>
 								</CustomDialog>
 							</Menu>
