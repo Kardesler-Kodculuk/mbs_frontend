@@ -11,13 +11,13 @@ export function TheseData(props: props) {
     const studentContext = useStudent()
 
     if (!studentContext || !studentContext?.theses) {
-        return <div />;
+        return null;
     }
 
     return (
         <Container>
             <Box display="flex">
-                <Typography variant="body1" noWrap>
+                <Typography component="div" variant="body1" noWrap>
                     <Box m={1}>
                         <Box>
                             <Box fontWeight="fontWeightBold" component="div" display="inline">
@@ -45,11 +45,11 @@ export function TheseData(props: props) {
 							</Box>
                             {`  ${ studentContext?.dissertation?.status }`}
                         </Box>
-                        {props.data?.map((data) =>
-                            <Box>
+                        {props.data?.map((data, i) =>
+                            <Box key={"Theses_data_extra_key_" + i}>
                                 <Box fontWeight="fontWeightBold" component="div" display="inline">
                                     {data.name}:
-							</Box>
+							    </Box>
                                 {`  ${ data.status }`}
                             </Box>)
                         }

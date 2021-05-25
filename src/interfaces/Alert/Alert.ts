@@ -4,7 +4,7 @@ export interface Alerts {
     createAlert: (name: string, page: string, body: string, type: Color) => void
     openAlert: (name: string, page: string) => void
     closeAlert: (name: string, page: string) => void
-    PageAlert: () => JSX.Element | null
+    PageAlert: JSX.Element | null
 }
 export type Color = "success" | "info" | "warning" | "error"
 

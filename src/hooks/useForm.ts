@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 
 type props<T> = {
@@ -6,22 +6,30 @@ type props<T> = {
 }
 
 export function useForm<T>({ initials }: props<T>): {
-    setValues: Function
+    setValues: (holder: string, value: T) => void
+    reset: (newValues: { [key: string]: T }) => void
     values: { [key: string]: T }
 } {
     //Creates Form states
-    const [values, setValues] = useState(initials || {});
+    const [values, setValues] = useState<{ [key: string]: T }>(initials || {});
+
+    const reset = (newValues: { [key: string]: T }) => {
+        setValues(newValues)
+    }
 
     //Handles the Form change, changes the given form part value
     const handleChange = (holder: string, value: T) => {
-        setValues({
-            ...values,
-            [holder]: value,
+        setValues((values) => {
+            return {
+                ...values,
+                [holder]: value,
+            }
         });
     };
 
     return {
         setValues: handleChange,
+        reset,
         values,
     };
 }

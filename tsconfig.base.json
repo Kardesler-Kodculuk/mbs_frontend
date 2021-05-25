@@ -27,7 +27,7 @@
     "paths": {
       "@mbs/components":["components"],
       "@mbs/contexts":["contexts"],
-      "@mbs/hooks*":["hooks/*"],
+      "@mbs/hooks":["hooks"],
       "@mbs/pages":["pages"],
       "@mbs/interfaces":["interfaces"],
       "@mbs/routes":["routes"],

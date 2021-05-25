@@ -15,7 +15,9 @@ export const StudentProvider = (props: props) => {
     const [dissertation, setDissertation] = useState<DissertationData | null>(null)
 
     const queryContext = useContext(QueryContext)
+
     useEffect(() => {
+        setTheses(null)
         async function fetchThese() {
             console.log(student)
             if (student?.latest_thesis_id && student?.latest_thesis_id > 0) {
@@ -28,6 +30,7 @@ export const StudentProvider = (props: props) => {
     }, [student])
 
     useEffect(() => {
+        setDissertation(null)
         async function fetchDissertation() {
             if (student?.latest_thesis_id) {
                 await queryContext?.queryInfo<DissertationData>("dissertation", [student?.student_id])

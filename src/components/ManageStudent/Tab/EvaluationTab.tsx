@@ -53,13 +53,11 @@ export function Evaluation() {
                     <TheseData />
                 </CardContent>
             </Box>
-            <Typography >
-                <Box fontWeight={150} marginBottom={3} display="flex" justifyContent="center" alignItems="center">
-                    <Button variant="contained" className={classes.accept}> Accept</Button>
-                    <Button variant="contained" className={classes.correction}>Correction</Button>
-                    <Button variant="contained" className={classes.reject}>Reject</Button>
-                </Box>
-            </Typography>
+            <Box fontWeight={150} marginBottom={3} display="flex" justifyContent="center" alignItems="center">
+                <Button variant="contained" className={classes.accept}> Accept</Button>
+                <Button variant="contained" className={classes.correction}>Correction</Button>
+                <Button variant="contained" className={classes.reject}>Reject</Button>
+            </Box>
         </Card >
     )
 }

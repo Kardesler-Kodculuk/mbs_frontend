@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import { useQuery, useAlert, useStudent } from "@mbs/services"
 import { Students, StudentData } from "@mbs/interfaces"
-import { TableRow, TableCell, IconButton, Button } from "@material-ui/core";
+import { TableRow, TableCell, Button } from "@material-ui/core";
 import { Link, useRouteMatch } from "react-router-dom";
 
 export function ManagedStudents() {

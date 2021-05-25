@@ -1,6 +1,7 @@
 export * from "./User/User"
 export * from "./User/Table"
 export * from "./User/NestedPage"
+export * from "./User/CustomDialog"
 export * from "./Welcome"
 export * from "./User/ComponentTab"
 export * from "./ManageStudent/StudentEvaluation"

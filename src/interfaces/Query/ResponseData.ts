@@ -29,7 +29,7 @@ export interface ThesesData {
 }
 
 export interface Jury {
-    jury: number[];
+    jury_members: number[];
 }
 
 export interface DissertationData {

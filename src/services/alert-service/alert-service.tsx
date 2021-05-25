@@ -47,11 +47,8 @@ export const AlertProvider = (props: props) => {
         }
     }
 
-    const PageAlert = () => {
-        if (alerts.length === 0) {
-            return null;
-        }
-        return (
+    const PageAlert =
+        (
             <div>
                 {alerts.map((alert: AlertT) => (
                     <Snackbar
@@ -67,7 +64,7 @@ export const AlertProvider = (props: props) => {
                 ))}
             </div>
         );
-    }
+
     const value = {
         createAlert: createAlert,
         openAlert: openAlert,
