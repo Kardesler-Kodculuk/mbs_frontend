@@ -1,13 +1,13 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, createContext } from 'react'
 import axios, { AxiosResponse } from "axios"
-import { QueryContext } from "@mbs/contexts"
 import { Query } from "@mbs/interfaces"
 import { MBS } from "@mbs/utils"
+
+export const QueryContext = createContext<Query | null>(null)
 
 type props = {
     children: React.ReactNode
 }
-
 
 export async function queryID<T>(endPoint: string): Promise<T> {
     return await axios.get<Promise<T>>(`${ MBS?.url }${ endPoint }`, { withCredentials: true })
