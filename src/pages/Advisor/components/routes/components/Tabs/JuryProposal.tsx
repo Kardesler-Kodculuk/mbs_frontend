@@ -261,7 +261,6 @@ export function JuryProposal() {
 							<Chip
 								label={`${1 + selectedJury.values.length + selectedOutsideJury.values.length}/5`}
 							/>
-							{form.values["name"]}
 						</Box>
 						<Box>
 							{selectedJury.values.length + selectedOutsideJury.values.length < 4 ? (

@@ -11,7 +11,7 @@ export function Advisor() {
 			alert.createAlerts([
 				["success", "adv_student_proposal_approve", "Proposal accepted.", "success"],
 				["success", "adv_student_proposal_reject", "Proposal rejected.", "success"],
-				["error", "adv_student_proposal_error", "Proposal action encountered an error.", "success"],
+				["error", "adv_student_proposal_error", "Proposal action encountered an error.", "error"],
 				["success", "advisor_proposal", "Proposal has been sent.", "success"],
 				[
 					"alert",

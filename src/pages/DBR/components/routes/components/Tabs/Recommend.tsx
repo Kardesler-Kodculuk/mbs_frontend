@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState, forwardRef } from "react"
 import { useQuery, useAlert, useStudent } from "@mbs/services"
-import { JuryData, Jury } from "@mbs/interfaces"
+import { AdvisorData, Advisors } from "@mbs/interfaces"
 import {
 	MenuItem,
 	Card,
@@ -17,6 +17,7 @@ import {
 	TableRow,
 	TableCell,
 	IconButton,
+	Chip,
 } from "@material-ui/core"
 import { useForm, useArray } from "@mbs/hooks"
 import { UserTable, CustomDialog } from "@mbs/components"
@@ -69,8 +70,8 @@ type outsideJury = {
 	phone_number: string
 }
 
-function compare(value: JuryData, cmp: JuryData) {
-	return value.jury_id === cmp.jury_id
+function compare(value: AdvisorData, cmp: AdvisorData) {
+	return value.user_id === cmp.user_id
 }
 function compareOutside(value: outsideJury, cmp: outsideJury) {
 	return value.name_ === cmp.name_ && value.surname === cmp.surname
@@ -91,42 +92,49 @@ export function Recommend() {
 	const alert = useAlert()
 	const student = useStudent()
 	const query = useQuery()
-	const [juryID, setJuryID] = useState<Jury | null>(null)
-	const [jurySelection, setJurySelection] = useState<JuryData | null>(null)
-	const [jurySelectionID, setJurySelectionID] = useState<number>(0)
-	const selectableJury = useArray<JuryData>({ compare: compare })
-	const selectedJury = useArray<JuryData>({ compare: compare })
-	const selectedOutsideJury = useArray<outsideJury>({ compare: compareOutside })
+	const [advisorID, setAdvisorID] = useState<Advisors | null>(null)
+	const [advisorSelectionID, setAdvisorSelectionID] = useState<number>(0)
+	const selectableAdvisor = useArray<AdvisorData>({ compare: compare })
+	const selectedAdvisor = useArray<AdvisorData>({ compare: compare })
 
 	const handleFacultySubmit = (e: React.SyntheticEvent): void => {
 		e.preventDefault()
-		console.log(jurySelection)
-		if (jurySelection) {
-			selectableJury.removeValue(jurySelection)
-			selectedJury.addValue(jurySelection)
+		let advisor: AdvisorData =
+			selectableAdvisor.values[
+				selectableAdvisor.values.findIndex((e) => e.user_id === advisorSelectionID)
+			]
+		if (advisor) {
+			selectableAdvisor.removeValue(advisor)
+			selectedAdvisor.addValue(advisor)
 		}
 	}
 
-	const handleFacultyRemove = (jury: JuryData): void => {
-		selectedJury.removeValue(jury)
-		selectableJury.addValue(jury)
+	const handleFacultyRemove = (advisor: AdvisorData): void => {
+		selectedAdvisor.removeValue(advisor)
+		selectableAdvisor.addValue(advisor)
 	}
 
 	const handleSelection = (event: React.ChangeEvent<{ value: unknown }>) => {
-		console.log(event.target.value)
-		let jury: JuryData =
-			selectableJury.values[
-				selectableJury.values.findIndex((e) => e.jury_id === event.target.value)
-			]
-		setJurySelection(jury)
+		setAdvisorSelectionID(event.target.value as number)
+	}
+
+	const handleRecommendation = async () => {
+		const res = selectedAdvisor.values.map((e) =>
+			query
+				?.postActionWithBody(`recommendations/${student?.student?.student_id}`, {
+					advisor_id: e.user_id,
+				})
+		)
+		await Promise.all(res)
+		student?.refresh()
 	}
 
 	useEffect(() => {
 		async function fetchJury() {
 			await query
-				?.queryID<Jury>("jury")
+				?.queryID<Advisors>("advisors")
 				.then((data) => {
-					setJuryID(data)
+					setAdvisorID(data)
 				})
 				.then(() => {})
 				.catch((err) => {
@@ -138,11 +146,11 @@ export function Recommend() {
 
 	useEffect(() => {
 		async function fetchJury() {
-			if (juryID) {
+			if (advisorID) {
 				await query
-					?.queryInfo<JuryData>("jury", juryID.jury_members)
+					?.queryInfo<AdvisorData>("advisors", advisorID.advisors)
 					.then((data) => {
-						selectableJury.addValues(data)
+						selectableAdvisor.addValues(data)
 					})
 					.then(() => {})
 					.catch((err) => {
@@ -151,8 +159,14 @@ export function Recommend() {
 			}
 		}
 		fetchJury()
-	}, [juryID])
-	
+	}, [advisorID])
+
+	useEffect(() => {
+		if (selectableAdvisor.values.length > 0) {
+			setAdvisorSelectionID(selectableAdvisor.values[0].user_id)
+		}
+	}, [selectableAdvisor.values])
+
 	if (student?.student?.is_advisors_recommended) {
 		return <Alert severity="info">Student received recommendation</Alert>
 	}
@@ -161,7 +175,10 @@ export function Recommend() {
 		<Box className={classes.root}>
 			<Card className={classes.innerCard}>
 				<Box className={classes.buttonBox}>
-					<Box className={classes.memberTitle}>Recommendation</Box>
+					<Box className={classes.memberTitle}>
+						Recommendation
+						<Chip label={`${selectedAdvisor.values.length}/2?`} />
+					</Box>
 					<Box>
 						<CustomDialog
 							componentName={"Add Member"}
@@ -171,18 +188,18 @@ export function Recommend() {
 							submit={{ value: "Add Member", handler: handleFacultySubmit }}>
 							<FormControl>
 								<Box display="flex" justifyContent="center">
-									{selectableJury.values.length > 0 ? (
+									{selectableAdvisor.values.length > 0 ? (
 										<Select
-											value={jurySelectionID}
+											value={advisorSelectionID}
 											onChange={handleSelection}
 											input={<Input />}
 											className={classes.selection}>
-											{selectableJury.values.map((member, i) => {
+											{selectableAdvisor.values.map((member, i) => {
 												return (
 													<MenuItem
-														value={member.jury_id}
+														value={member.user_id}
 														key={
-															"select_list_" + member.jury_id
+															"select_list_" + member.user_id
 														}>{`${member.name_} ${member.surname}`}</MenuItem>
 												)
 											})}
@@ -195,7 +212,7 @@ export function Recommend() {
 				</Box>
 				<Divider />
 				<UserTable smaller={true}>
-					{selectedJury?.values.map((jury) => (
+					{selectedAdvisor?.values.map((jury) => (
 						<TableRow key={"table_row_" + jury.name_}>
 							<TableCell>
 								<IconButton onClick={() => handleFacultyRemove(jury)}>
@@ -208,12 +225,15 @@ export function Recommend() {
 						</TableRow>
 					))}
 				</UserTable>
-				<Divider />
-				<Box display="flex" justifyContent="right">
-					<Button variant="contained" className={classes.submit}>
+				{selectedAdvisor.values.length < 2 ? (
+					<Button variant="contained" className={classes.submit} disabled>
 						Recommend Jury
 					</Button>
-				</Box>
+				) : (
+					<Button variant="contained" className={classes.submit} onClick={handleRecommendation}>
+						Recommend Jury
+					</Button>
+				)}
 			</Card>
 		</Box>
 	)
