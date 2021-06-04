@@ -1,10 +1,9 @@
-import React, { useContext, useState, createContext } from "react"
+import React, { useContext, useState } from "react"
+import { AlertContext } from "@mbs/contexts"
 import { Alert as AlertT, Alerts, Color } from "@mbs/interfaces"
-import { Snackbar } from "@material-ui/core"
 import Alert from "@material-ui/lab/Alert"
+import { Snackbar } from "@material-ui/core"
 import Fade from "@material-ui/core/Fade"
-
-export const AlertContext = createContext<Alerts | null>(null)
 
 type props = {
 	children: React.ReactNode
@@ -15,6 +14,7 @@ export const AlertProvider = (props: props) => {
 
 	const createAlert = (name: string, page: string, body: string, type: Color) => {
 		if (alertIndex(name, page) < 0) {
+			console.log("asdasdasdasdsa")
 			let newAlerts = [
 				...alerts,
 				{
@@ -28,6 +28,24 @@ export const AlertProvider = (props: props) => {
 			setAlerts([...newAlerts])
 		}
 	}
+
+	const createAlerts = (newAlerts: [string, string, string, Color][]) => {
+		setAlerts([])
+		newAlerts.forEach((e) => createAlert(e[0], e[1], e[2], e[3]))
+		setAlerts(() => {
+			const reduced: AlertT[] = []
+			newAlerts.forEach((e) =>
+				reduced.push({
+					name: e[0],
+					page: e[1],
+					body: e[2],
+					type: e[3],
+					open: false,
+				})
+			)
+			return reduced
+		})
+	}
 	const alertIndex = (name: string, page: string) => {
 		const i = alerts.findIndex((e) => e.name === name && e.page === page)
 		return i
@@ -36,16 +54,25 @@ export const AlertProvider = (props: props) => {
 	const openAlert = (name: string, page: string) => {
 		if (alerts.length > 0) {
 			let newAlerts = [...alerts]
-			newAlerts[alertIndex(name, page)].open = true
-			setAlerts([...newAlerts])
+			let i = alertIndex(name, page)
+			console.log(newAlerts)
+			if (i >= 0) {
+				console.log(i)
+				newAlerts[i].open = true
+				setAlerts([...newAlerts])
+			}
 		}
 	}
 
 	const closeAlert = (name: string, page: string) => {
 		if (alerts.length > 0) {
 			let newAlerts = [...alerts]
-			newAlerts[alertIndex(name, page)].open = false
-			setAlerts([...newAlerts])
+			let i = alertIndex(name, page)
+			console.log(i)
+			if (i >= 0) {
+				newAlerts[i].open = false
+				setAlerts([...newAlerts])
+			}
 		}
 	}
 
@@ -67,7 +94,9 @@ export const AlertProvider = (props: props) => {
 	)
 
 	const value = {
+		alerts,
 		createAlert: createAlert,
+		createAlerts,
 		openAlert: openAlert,
 		closeAlert: closeAlert,
 		PageAlert: PageAlert,

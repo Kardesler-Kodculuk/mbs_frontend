@@ -10,7 +10,7 @@ import {
 	TableBody,
 	Button,
 	Box,
-} from "@material-ui/core";
+} from "@material-ui/core"
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -42,24 +42,22 @@ const useStyles = makeStyles((theme) => ({
 	body: {
 		fontSize: 14,
 	},
-}));
+}))
 
 type props = {
-	children: any;
-	title?: string;
-	buttons?: { value: string; handler: Function }[];
-	smaller?: true;
-};
+	children: any
+	title?: string
+	buttons?: JSX.Element[]
+	smaller?: true
+}
 
 export function UserTable(props: props) {
-	const classes = useStyles();
+	const classes = useStyles()
 	return (
 		<Card className={props.smaller ? classes.root_small : classes.root}>
 			<Box className={classes.box} left="80%" position="relative">
 				{props.buttons?.map((button, i) => (
-					<Button variant="contained" color="primary" key={"user_table_buttons_" + i}>
-						{button.value}
-					</Button>
+					button
 				))}
 			</Box>
 			<CardContent>
@@ -83,5 +81,5 @@ export function UserTable(props: props) {
 				</Container>
 			</CardContent>
 		</Card>
-	);
+	)
 }

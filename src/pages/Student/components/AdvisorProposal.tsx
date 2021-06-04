@@ -17,13 +17,6 @@ export function AdvisorProposal() {
     const alert = useAlert()
 
     useEffect(() => {
-        if (alert) {
-            alert.createAlert("success", "advisor_proposal", "Proposal has been sent.", "success")
-            alert.createAlert("alert", "advisor_proposal", "Please enter your thesis topic before proposing to an advisor.", "warning")
-        }
-    }, [])
-
-    useEffect(() => {
         async function fetchRecommendations() {
             await query?.queryID<Recommendation[]>("recommendations")
                 .then(data => { setRecommendations(data) })

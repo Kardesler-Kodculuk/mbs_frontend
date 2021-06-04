@@ -1,11 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, useState } from "react"
+import { QueryContext, StudentContext } from "@mbs/contexts"
 import { StudentData, ThesesData, DissertationData, JuryData, AdvisorData } from "@mbs/interfaces"
-import { createContext } from "react"
-import { StudentView } from "@mbs/interfaces"
-import { useQuery } from "@mbs/services"
-
-export const StudentContext = createContext<StudentView | null>(null)
+import { MBS } from "@mbs/utils"
 
 type props = {
 	children: React.ReactNode
@@ -18,7 +15,18 @@ export const StudentProvider = (props: props) => {
 	const [dissertation, setDissertation] = useState<DissertationData | null>(null)
 	const [jury, setJury] = useState<JuryData[] | null>(null)
 
-	const query = useQuery()
+	const query = useContext(QueryContext)
+
+	const refresh = async () => {
+		if (student) {
+			await query
+				?.queryInfo<StudentData>("students", [student?.user_id])
+				.then((data) => {
+					setStudent(data[0])
+				})
+				.then(() => {})
+		}
+	}
 
 	useEffect(() => {
 		setTheses(null)
@@ -36,13 +44,13 @@ export const StudentProvider = (props: props) => {
 	}, [student])
 
 	useEffect(() => {
-		setDissertation(null)
+		setAdvisor(null)
 		async function fetchAdvisor() {
 			if (student?.latest_thesis_id) {
 				await query
-					?.queryInfo<AdvisorData>("students/advisor", [student?.student_id])
+					?.queryInfo<{ advisor: AdvisorData }>("students/advisor", [student?.student_id])
 					.then((data) => {
-						setAdvisor(data[0])
+						setAdvisor(data[0].advisor)
 					})
 					.catch((err) => {})
 			}
@@ -71,9 +79,9 @@ export const StudentProvider = (props: props) => {
 				await query
 					?.queryInfo<JuryData>("jury", dissertation?.jury_ids)
 					.then((data) => {
+						console.log(data)
 						setJury(data)
 					})
-					.then(() => {})
 					.catch((err) => {
 						console.log(err.response)
 					})
@@ -85,10 +93,12 @@ export const StudentProvider = (props: props) => {
 
 	const value = {
 		student,
+		advisor,
 		theses,
 		dissertation,
 		jury,
 		setStudent,
+		refresh,
 	}
 
 	return <StudentContext.Provider value={value}>{props.children}</StudentContext.Provider>

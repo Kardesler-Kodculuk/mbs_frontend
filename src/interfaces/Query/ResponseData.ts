@@ -26,6 +26,7 @@ export interface ThesesData {
     thesis_topic: string;
     due_date: number;
     submission_date: number;
+    original_name: string;
 }
 
 export interface Jury {

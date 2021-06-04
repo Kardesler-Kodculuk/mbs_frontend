@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"
 import {
 	Dialog,
 	Button,
@@ -6,7 +6,7 @@ import {
 	DialogTitle,
 	DialogContent,
 	makeStyles,
-} from "@material-ui/core";
+} from "@material-ui/core"
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -38,35 +38,43 @@ const useStyles = makeStyles((theme) => ({
 			backgroundColor: "#6fbf73",
 		},
 	},
-}));
+}))
 
 type DialogData = {
-	children: any;
-	title: string;
-	submit: { value: string; handler: (e: React.SyntheticEvent) => void };
-	component: any;
-	componentName: string;
-	onClick?: Function;
-};
+	children: any
+	title: string
+	submit: { value: string; handler: (e: React.SyntheticEvent) => void }
+	component: any
+	componentName: string
+	componentClassName?: string
+	onClick?: Function
+	variant?: string
+	onClose?: Function
+}
 
 export function CustomDialog(props: DialogData) {
-	const classes = useStyles();
-	const [open, setOpen] = React.useState(false);
+	const classes = useStyles()
+	const [open, setOpen] = React.useState(false)
 	const openDialog = () => {
-		setOpen(true);
-	};
+		setOpen(true)
+	}
 
 	const closeDialog = () => {
-		setOpen(false);
-	};
+		if (props.onClose) {
+			props.onClose()
+		}
+		setOpen(false)
+	}
 
 	return (
 		<div>
 			<props.component
+				variant={props?.variant}
+				className={props?.componentClassName}
 				onClick={() => {
-					openDialog();
+					openDialog()
 					if (props.onClick) {
-						props?.onClick();
+						props?.onClick()
 					}
 				}}>
 				{props.componentName}
@@ -90,5 +98,5 @@ export function CustomDialog(props: DialogData) {
 				</form>
 			</Dialog>
 		</div>
-	);
+	)
 }

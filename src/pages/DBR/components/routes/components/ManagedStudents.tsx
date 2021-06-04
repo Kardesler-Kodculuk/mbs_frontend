@@ -33,6 +33,7 @@ export function ManagedStudents() {
 				await query
 					?.queryInfo<StudentData>("students", managed.students)
 					.then((data) => {
+						console.log(data)
 						setStudents(data);
 					})
 					.then(() => {})

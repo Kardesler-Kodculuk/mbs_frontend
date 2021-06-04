@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState, forwardRef } from "react";
-import { useQuery, useAlert } from "@mbs/services";
-import { JuryData, Jury } from "@mbs/interfaces";
+import { useEffect, useState, forwardRef } from "react"
+import { useQuery, useAlert, useStudent } from "@mbs/services"
+import { JuryData, Jury } from "@mbs/interfaces"
 import {
 	MenuItem,
 	Card,
@@ -17,13 +17,14 @@ import {
 	TableRow,
 	TableCell,
 	IconButton,
-} from "@material-ui/core";
-import { useForm, useArray } from "@mbs/hooks";
-import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
-import { UserTable, CustomDialog } from "@mbs/components";
-import ClearIcon from "@material-ui/icons/Clear";
-
+	Chip,
+} from "@material-ui/core"
+import { useForm, useArray } from "@mbs/hooks"
+import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers"
+import DateFnsUtils from "@date-io/date-fns"
+import { UserTable, CustomDialog } from "@mbs/components"
+import ClearIcon from "@material-ui/icons/Clear"
+import Alert from "@material-ui/lab/Alert"
 const useStyles = makeStyles((theme) => ({
 	root: {
 		minWidth: 575,
@@ -61,21 +62,27 @@ const useStyles = makeStyles((theme) => ({
 		margin: theme.spacing(2),
 		minWidth: 200,
 	},
-}));
+}))
 
 type outsideJury = {
-	name_: string;
-	surname: string;
-	email: string;
-	institution: string;
-	phone_number: string;
-};
+	name_: string
+	surname: string
+	email: string
+	institution: string
+	phone_number: string
+}
 
 function compare(value: JuryData, cmp: JuryData) {
-	return value.jury_id === cmp.jury_id;
+	return value.jury_id === cmp.jury_id
 }
 function compareOutside(value: outsideJury, cmp: outsideJury) {
-	return value.name_ === cmp.name_ && value.surname === cmp.surname;
+	return (
+		value.name_ === cmp.name_ &&
+		value.surname === cmp.surname &&
+		value.email === cmp.email &&
+		value.phone_number === cmp.phone_number &&
+		value.institution === cmp.institution
+	)
 }
 
 export function JuryProposal() {
@@ -87,92 +94,122 @@ export function JuryProposal() {
 			institution: "",
 			phone_number: "",
 		},
-	});
+	})
 
-	const classes = useStyles();
-	const alert = useAlert();
-	const query = useQuery();
-	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-	const [juryID, setJuryID] = useState<Jury | null>(null);
-	const [jurySelectionID, setJurySelectionID] = useState<number>(0);
-	const selectableJury = useArray<JuryData>({ compare: compare });
-	const selectedJury = useArray<JuryData>({ compare: compare });
-	const selectedOutsideJury = useArray<outsideJury>({ compare: compareOutside });
-	const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
+	const classes = useStyles()
+	const alert = useAlert()
+	const query = useQuery()
+	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+	const [juryID, setJuryID] = useState<Jury | null>(null)
+	const [jurySelectionID, setJurySelectionID] = useState<number>(0)
+	const selectableJury = useArray<JuryData>({ compare: compare })
+	const selectedJury = useArray<JuryData>({ compare: compare })
+	const selectedOutsideJury = useArray<outsideJury>({ compare: compareOutside })
+	const [selectedDate, setSelectedDate] = useState<Date | null>(new Date())
+	const student = useStudent()
 
 	const handleOutsideSubmit = (e: React.SyntheticEvent): void => {
-		e.preventDefault();
+		e.preventDefault()
 		selectedOutsideJury.addValue({
 			name_: form.values["name_"],
 			surname: form.values["surname"],
 			email: form.values["email"],
 			institution: form.values["institution"],
 			phone_number: form.values["phone_number"],
-		});
+		})
 		form.reset({
 			name_: "",
 			surname: "",
 			email: "",
 			institution: "",
 			phone_number: "",
-		});
-	};
+		})
+	}
+
+	useEffect(() => {
+		form.reset({
+			name_: "",
+			surname: "",
+			email: "",
+			institution: "",
+			phone_number: "",
+		})
+	}, [])
+
 	const handleFacultySubmit = (e: React.SyntheticEvent): void => {
-		e.preventDefault();
+		e.preventDefault()
 		let jury: JuryData =
-			selectableJury.values[selectableJury.values.findIndex((e) => e.jury_id === jurySelectionID)];
+			selectableJury.values[selectableJury.values.findIndex((e) => e.jury_id === jurySelectionID)]
 		if (jury) {
-			selectableJury.removeValue(jury);
-			selectedJury.addValue(jury);
+			selectableJury.removeValue(jury)
+			selectedJury.addValue(jury)
 		}
-	};
+	}
 
 	const handleFacultyRemove = (jury: JuryData): void => {
-		selectedJury.removeValue(jury);
-		selectableJury.addValue(jury);
-	};
+		selectedJury.removeValue(jury)
+		selectableJury.addValue(jury)
+	}
 
 	const handleDateChange = (date: Date | null) => {
-		setSelectedDate(date);
-	};
+		if (date) {
+			date.setHours(0, 0, 0, 0)
+			setSelectedDate(date)
+		}
+	}
 
 	const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-		setAnchorEl(event.currentTarget);
-	};
+		setAnchorEl(event.currentTarget)
+	}
 
 	const handleClose = () => {
-		setAnchorEl(null);
-	};
+		setAnchorEl(null)
+	}
 
 	const handleSelection = (event: React.ChangeEvent<{ value: unknown }>) => {
-		console.log(event.target.value);
-		setJurySelectionID(event.target.value as number);
-	};
+		console.log(event.target.value)
+		setJurySelectionID(event.target.value as number)
+	}
+
+	const handleRecommendation = () => {
+		if (selectedDate) {
+			query
+				?.postActionWithBody(`dissertation/${student?.student?.student_id}`, {
+					jury_members: selectedJury.values.map((e) => e.jury_id),
+					new_members: selectedOutsideJury.values,
+					dissertation_date: selectedDate?.getTime() / 1000,
+				})
+				.then((data) => {
+					student?.refresh()
+					alert?.openAlert("success", "advisor_jury_proposal")
+				})
+		}
+	}
 
 	useEffect(() => {
 		if (selectableJury.values.length > 0) {
-			setJurySelectionID(selectableJury.values[0].jury_id);
+			setJurySelectionID(selectableJury.values[0].jury_id)
 		}
-	}, [selectableJury.values]);
+	}, [selectableJury.values])
 
 	useEffect(() => {
-		console.log(jurySelectionID);
-	}, [jurySelectionID]);
+		console.log(jurySelectionID)
+	}, [jurySelectionID])
 
 	useEffect(() => {
 		async function fetchJury() {
 			await query
 				?.queryID<Jury>("jury")
 				.then((data) => {
-					setJuryID(data);
+					setJuryID(data)
 				})
 				.then(() => {})
 				.catch((err) => {
-					console.log(err.response);
-				});
+					console.log(err.response)
+				})
 		}
-		fetchJury();
-	}, []);
+		fetchJury()
+	}, [])
 
 	useEffect(() => {
 		async function fetchJury() {
@@ -180,16 +217,25 @@ export function JuryProposal() {
 				await query
 					?.queryInfo<JuryData>("jury", juryID.jury_members)
 					.then((data) => {
-						selectableJury.addValues(data);
+						selectedJury.clear()
+						selectedOutsideJury.clear()
+						data = data.filter((e) => e.jury_id !== student?.advisor?.user_id)
+						selectableJury.addValues(data)
+						console.log(student?.advisor?.user_id)
 					})
 					.then(() => {})
 					.catch((err) => {
-						console.log(err.response);
-					});
+						console.log(err.response)
+					})
 			}
 		}
-		fetchJury();
-	}, [juryID]);
+		fetchJury()
+	}, [juryID])
+
+
+	if (student?.student?.has_dissertation) {
+		return <Alert severity="info">Student proposed Jury and Date</Alert>
+	}
 
 	return (
 		<Card>
@@ -210,11 +256,20 @@ export function JuryProposal() {
 				</Box>
 				<Card className={classes.innerCard}>
 					<Box className={classes.buttonBox}>
-						<Box className={classes.memberTitle}>Members {form.values["name"]}</Box>
+						<Box className={classes.memberTitle}>
+							Members
+							<Chip
+								label={`${1 + selectedJury.values.length + selectedOutsideJury.values.length}/5`}
+							/>
+							{form.values["name"]}
+						</Box>
 						<Box>
-							<Button variant="contained" className={classes.memberButton} onClick={handleClick}>
-								Add Member
-							</Button>
+							{selectedJury.values.length + selectedOutsideJury.values.length < 4 ? (
+								<Button variant="contained" className={classes.memberButton} onClick={handleClick}>
+									Add Member
+								</Button>
+							) : null}
+
 							<Menu
 								id="selection"
 								anchorEl={anchorEl}
@@ -243,7 +298,7 @@ export function JuryProposal() {
 																	key={
 																		"select_list_" + member.jury_id
 																	}>{`${member.name_} ${member.surname}`}</MenuItem>
-															);
+															)
 														})}
 													</Select>
 												) : null}
@@ -263,7 +318,7 @@ export function JuryProposal() {
 												required
 												label="Name"
 												onChange={(e) => {
-													form.setValues("name_", e.target.value);
+													form.setValues("name_", e.target.value)
 												}}
 												value={form.values["name_"]}
 												fullWidth
@@ -309,8 +364,14 @@ export function JuryProposal() {
 					</Box>
 					<Divider />
 					<UserTable smaller={true}>
+						<TableRow key={"table_row_advisor_selected"}>
+							<TableCell></TableCell>
+							<TableCell component="th" scope="row" align="right">
+								{student?.advisor?.name_ + " " + student?.advisor?.surname}
+							</TableCell>
+						</TableRow>
 						{selectedJury?.values.map((jury) => (
-							<TableRow key={"table_row_" + jury.name_}>
+							<TableRow key={"table_row_selected_inside_" + jury.jury_id}>
 								<TableCell>
 									<IconButton onClick={() => handleFacultyRemove(jury)}>
 										<ClearIcon color="primary" />
@@ -321,8 +382,9 @@ export function JuryProposal() {
 								</TableCell>
 							</TableRow>
 						))}
-						{selectedOutsideJury?.values.map((jury) => (
-							<TableRow key={"table_row_" + jury.name_}>
+
+						{selectedOutsideJury?.values.map((jury, i) => (
+							<TableRow key={"table_row_outside_" + jury.name_ + jury.surname + "_" + i}>
 								<TableCell>
 									<IconButton onClick={() => selectedOutsideJury.removeValue(jury)}>
 										<ClearIcon color="primary" />
@@ -336,11 +398,17 @@ export function JuryProposal() {
 					</UserTable>
 				</Card>
 				<Box display="flex" justifyContent="right">
-					<Button variant="contained" className={classes.submit}>
-						Recommend Jury
-					</Button>
+					{selectedJury.values.length + selectedOutsideJury.values.length < 4 ? (
+						<Button variant="contained" className={classes.submit} disabled>
+							Recommend Jury
+						</Button>
+					) : (
+						<Button variant="contained" className={classes.submit} onClick={handleRecommendation}>
+							Recommend Jury
+						</Button>
+					)}
 				</Box>
 			</Box>
 		</Card>
-	);
+	)
 }

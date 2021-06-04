@@ -42,13 +42,6 @@ export function TopicForm() {
 		},
 	});
 
-	useEffect(() => {
-		if (alert) {
-			alert.createAlert("success", "topic_form", "Thesis Topic Has been submitted", "success");
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [load]);
-
 	const handleSubmit = async (e: React.SyntheticEvent): Promise<void> => {
 		if (alert && query && user?.user?.student) {
 			e.preventDefault();

@@ -29,8 +29,10 @@ export type StudentData = {
     department: string
     thesis_topic: string
     graduation_status: string
-    jury_tss_decision: string
     latest_thesis_id: number
+    jury_tss_decision: string
+    is_advisors_recommended: boolean
+    has_dissertation:boolean
 } & General
 
 export type AdvisorData = {

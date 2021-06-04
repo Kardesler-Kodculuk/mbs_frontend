@@ -1,6 +1,6 @@
 import React, { useContext } from "react"
 import { Route, Redirect } from 'react-router-dom';
-import { UserContext } from "@mbs/contexts"
+import { useUser } from "@mbs/services"
 
 
 type props = {
@@ -9,6 +9,6 @@ type props = {
 }
 
 export function LoginRoute(props: props) {
-    const userContext = useContext(UserContext)
+    const userContext = useUser()
     return userContext?.user ? <Route path={`${props.path}`} render={() => <props.component />}></Route> : <Redirect to='/login' />;
 }

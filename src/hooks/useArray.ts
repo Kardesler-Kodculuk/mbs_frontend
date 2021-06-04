@@ -22,7 +22,7 @@ export function useArray<T>(props: props) {
             setValues([...newValues])
         }
     }
-    const addValues =async  (value: T[]) => {
+    const addValues = async (value: T[]) => {
         setValues([])
         let newValues = [...values, ...value]
         setValues([...newValues])
@@ -36,12 +36,16 @@ export function useArray<T>(props: props) {
             setValues([...newValues])
         }
     }
+    const clear = () => {
+        setValues([])
+    }
 
     return {
         values,
         addValue,
         addValues,
         removeValue,
-        findIndex
+        findIndex, 
+        clear
     };
 }
