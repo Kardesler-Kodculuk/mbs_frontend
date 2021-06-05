@@ -173,7 +173,7 @@ export function Recommend() {
 				<Box className={classes.buttonBox}>
 					<Box className={classes.memberTitle}>
 						Recommendation
-						<Chip label={`${selectedAdvisor.values.length}/2?`} />
+						<Chip label={`${selectedAdvisor.values.length}/1?`} />
 					</Box>
 					<Box>
 						<CustomDialog
@@ -221,13 +221,13 @@ export function Recommend() {
 						</TableRow>
 					))}
 				</UserTable>
-				{selectedAdvisor.values.length < 2 ? (
+				{selectedAdvisor.values.length < 1 ? (
 					<Button variant="contained" className={classes.submit} disabled>
-						Recommend Jury
+						Recommend Advisor
 					</Button>
 				) : (
 					<Button variant="contained" className={classes.submit} onClick={handleRecommendation}>
-						Recommend Jury
+						Recommend Advisor
 					</Button>
 				)}
 			</Card>
