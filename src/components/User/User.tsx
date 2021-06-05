@@ -7,7 +7,7 @@ import {
 	CssBaseline,
 	Typography,
 	IconButton,
-	Grid,
+	Box,
 } from "@material-ui/core";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import ExitToAppOutlinedIcon from "@material-ui/icons/ExitToAppOutlined";
@@ -82,9 +82,9 @@ export function User(props: props) {
 					<Sidebar selections={props.selections} to={url} links={props.links} />
 				)}
 				<main className={classes.content}>
-					<Grid container justify="center" alignItems="center" style={{ minHeight: "60vh" }}>
+					<Box display="flex" justifyContent="center" alignItems="center" style={{ minHeight: "60vh" }}>
 						<Content contents={props.contents} to={path} links={props.links} />
-					</Grid>
+					</Box>
 				</main>
 			</div>
 			{alert?.PageAlert}

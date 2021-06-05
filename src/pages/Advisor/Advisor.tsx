@@ -2,6 +2,7 @@ import { User, Welcome } from "@mbs/components"
 import { useEffect, useState } from "react"
 import { useAlert } from "@mbs/services"
 import { ManageStudents } from "./components/ManageStudents"
+
 export function Advisor() {
 	const alert = useAlert()
 	const [loaded, setLoaded] = useState(false)
