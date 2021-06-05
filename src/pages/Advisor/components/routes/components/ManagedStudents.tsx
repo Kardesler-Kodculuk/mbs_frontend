@@ -97,7 +97,6 @@ export function ManagedStudents() {
 		fetchStudents()
 	}, [managed])
 
-	
 	useEffect(() => {
 		async function fetchStudents() {
 			if (proposals) {
@@ -213,6 +212,9 @@ export function ManagedStudents() {
 						<IconButton onClick={() => handleReject(student)}>
 							<ClearIcon color="primary" />
 						</IconButton>
+					</TableCell>
+					<TableCell component="th" scope="row" align="right">
+						{student.thesis_topic}
 					</TableCell>
 					<TableCell component="th" scope="row" align="right">
 						{student.name_ + " " + student.surname}

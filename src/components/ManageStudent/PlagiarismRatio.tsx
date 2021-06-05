@@ -25,7 +25,7 @@ export function PlagiarismRatio(props: plagiarism) {
         <Box position="relative" display="inline-flex">
             <div className={classes.root}>
                 <CircularProgress variant="determinate" className={classes.bottom} value={100} />
-                <CircularProgress variant="determinate" className={classes.top} color={props.ratio > 12 ? "secondary" : "primary"} value={props.ratio} />
+                <CircularProgress variant="determinate" className={classes.top} color={props.ratio >= 20 ? "secondary" : "primary"} value={props.ratio} />
                 <Box
                     top={20}
                     left={9}
