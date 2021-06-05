@@ -1,15 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState, useContext } from "react"
+import React, { useEffect, useState, } from "react"
 import { useQuery, useAlert } from "@mbs/services"
 import { ThesesData } from "@mbs/interfaces"
-import CheckIcon from "@material-ui/icons/Check"
 import { UserTable } from "@mbs/components"
-import { TableRow, TableCell, Button, IconButton, Box, Typography } from "@material-ui/core"
+import { TableRow, TableCell, Button, IconButton } from "@material-ui/core"
 import { PlagiarismRatio } from "@mbs/components"
 import axios from "axios"
 import { MBS } from "@mbs/utils"
 import { Delete, CloudDownload } from "@material-ui/icons"
-export function Theses() {
+
+export function Thesis() {
 	const [load, setLoad] = useState<boolean>(true)
 	const [theses, setTheses] = useState<number[] | null>(null)
 	const [thesesData, setThesesData] = useState<ThesesData[] | null>(null)

@@ -5,8 +5,6 @@ import { ManagedStudents } from "./components/ManagedStudents"
 
 export function StudentPage() {
 
-
-
     return (
         <div>
             <UserTable title={"Students"}>

@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import { useRouteMatch } from "react-router-dom";
 import { ComponentTabs } from "@mbs/components";
 import { useStudent } from "@mbs/services";

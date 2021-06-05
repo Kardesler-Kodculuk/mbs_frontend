@@ -1,17 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState, forwardRef } from "react"
-import { useQuery, useAlert, useStudent } from "@mbs/services"
+import { useEffect, useState } from "react"
+import { useQuery, useStudent } from "@mbs/services"
 import { AdvisorData, Advisors } from "@mbs/interfaces"
 import {
 	MenuItem,
 	Card,
 	makeStyles,
-	TextField,
 	Box,
 	Divider,
 	Select,
 	Input,
-	Menu,
 	Button,
 	FormControl,
 	TableRow,
@@ -89,7 +87,6 @@ export function Recommend() {
 	})
 
 	const classes = useStyles()
-	const alert = useAlert()
 	const student = useStudent()
 	const query = useQuery()
 	const [advisorID, setAdvisorID] = useState<Advisors | null>(null)
@@ -120,10 +117,9 @@ export function Recommend() {
 
 	const handleRecommendation = async () => {
 		const res = selectedAdvisor.values.map((e) =>
-			query
-				?.postActionWithBody(`recommendations/${student?.student?.student_id}`, {
-					advisor_id: e.user_id,
-				})
+			query?.postActionWithBody(`recommendations/${student?.student?.student_id}`, {
+				advisor_id: e.user_id,
+			})
 		)
 		await Promise.all(res)
 		student?.refresh()

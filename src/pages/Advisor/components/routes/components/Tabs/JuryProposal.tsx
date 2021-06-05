@@ -232,9 +232,8 @@ export function JuryProposal() {
 		fetchJury()
 	}, [juryID])
 
-
 	if (student?.student?.has_dissertation) {
-		return <Alert severity="info">Student proposed Jury and Date</Alert>
+		return <Alert severity="info">Proposed Jury and Date</Alert>
 	}
 
 	return (

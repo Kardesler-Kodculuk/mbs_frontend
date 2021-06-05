@@ -4,7 +4,9 @@ import { MBS } from "@mbs/utils"
 import { useStudent, useAlert, useQuery } from "@mbs/services"
 import { useForm } from "@mbs/hooks"
 import axios from "axios"
+import { useEffect } from "react"
 import CloudDownloadIcon from "@material-ui/icons/CloudDownload"
+
 import Alert from "@material-ui/lab/Alert"
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -86,6 +88,11 @@ export function Thesis() {
 		}
 	}
 
+	useEffect(() => {
+		student?.refresh()
+	}, [])
+
+	console.log(student)
 	if (!student?.theses) {
 		return <Alert severity="info">Student did not uploaded a thesis</Alert>
 	}
@@ -133,7 +140,7 @@ export function Thesis() {
 					</Box>
 				</CustomDialog>
 
-				{student.student?.is_thesis_sent ? (
+				{student.student?.is_thesis_sent && student?.theses?.plagiarism_ratio < 20 ? (
 					<Button variant="contained" className={classes.button} disabled>
 						Submit Copy
 					</Button>

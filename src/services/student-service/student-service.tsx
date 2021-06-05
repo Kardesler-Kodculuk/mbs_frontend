@@ -25,19 +25,23 @@ export const StudentProvider = (props: props) => {
 					setStudent(data[0])
 				})
 				.then(() => {})
+				.catch((err) => console.log(err))
 		}
 	}
 
 	useEffect(() => {
 		setTheses(null)
 		async function fetchThese() {
-			if (student?.latest_thesis_id && student?.latest_thesis_id > 0) {
+			console.log(student?.latest_thesis_id && student?.latest_thesis_id >= 0)
+			if (student?.latest_thesis_id !== undefined && student?.latest_thesis_id >= 0) {
 				await query
 					?.queryInfo<ThesesData>("theses/metadata", [student?.latest_thesis_id])
 					.then((data) => {
 						setTheses(data[0])
 					})
-					.catch((err) => {})
+					.catch((err) => {
+						console.log(err)
+					})
 			}
 		}
 		fetchThese()
@@ -46,13 +50,15 @@ export const StudentProvider = (props: props) => {
 	useEffect(() => {
 		setAdvisor(null)
 		async function fetchAdvisor() {
-			if (student?.latest_thesis_id) {
+			if (student?.latest_thesis_id !== undefined) {
 				await query
 					?.queryInfo<{ advisor: AdvisorData }>("students/advisor", [student?.student_id])
 					.then((data) => {
 						setAdvisor(data[0].advisor)
 					})
-					.catch((err) => {})
+					.catch((err) => {
+						console.log(err)
+					})
 			}
 		}
 		fetchAdvisor()
@@ -61,13 +67,15 @@ export const StudentProvider = (props: props) => {
 	useEffect(() => {
 		setDissertation(null)
 		async function fetchDissertation() {
-			if (student?.latest_thesis_id) {
+			if (student?.latest_thesis_id !== undefined) {
 				await query
 					?.queryInfo<DissertationData>("dissertation", [student?.student_id])
 					.then((data) => {
 						setDissertation(data[0])
 					})
-					.catch((err) => {})
+					.catch((err) => {
+						console.log(err)
+					})
 			}
 		}
 		fetchDissertation()
@@ -79,7 +87,6 @@ export const StudentProvider = (props: props) => {
 				await query
 					?.queryInfo<JuryData>("jury", dissertation?.jury_ids)
 					.then((data) => {
-						console.log(data)
 						setJury(data)
 					})
 					.catch((err) => {

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { User, Welcome } from "@mbs/components"
 import { TopicForm } from "./components/TopicForm"
 import { AdvisorProposal } from "./components/AdvisorProposal"
-import { Theses } from "./components/Theses"
+import { Thesis } from "./components/Thesis"
 import { useAlert } from "@mbs/services"
 export function Student() {
 	const alert = useAlert()
@@ -38,7 +38,7 @@ export function Student() {
 
 	const Selections: string[] = ["Home", "Select Topic", "Manage Thesis", "Select Advisor"]
 	const Links: string[] = ["/home", "/thesis-topic", "/manage-thesis", "/select-advisor"]
-	const Contents: React.FC[] = [Welcome, TopicForm, Theses, AdvisorProposal]
+	const Contents: React.FC[] = [Welcome, TopicForm, Thesis, AdvisorProposal]
 
 	return <User selections={Selections} links={Links} contents={Contents} />
 }

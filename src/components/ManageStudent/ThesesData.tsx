@@ -37,7 +37,13 @@ export function TheseData(props: props) {
 							<Box fontWeight="fontWeightBold" component="div" display="inline">
 								Deadline Date:
 							</Box>
-							{`  ${new Date(studentContext?.theses?.due_date * 1000).toLocaleDateString("en-US")}`}
+							{`  ${
+								studentContext?.dissertation?.jury_date
+									? new Date(studentContext?.dissertation?.jury_date * 1000).toLocaleDateString(
+											"en-US"
+									  )
+									: "NOT SPECIFIED"
+							}`}
 						</Box>
 						<Box>
 							<Box fontWeight="fontWeightBold" component="div" display="inline">
