@@ -171,6 +171,7 @@ export function JuryProposal() {
 		setJurySelectionID(event.target.value as number)
 	}
 
+	
 	const handleRecommendation = () => {
 		if (selectedDate) {
 			query
@@ -231,7 +232,9 @@ export function JuryProposal() {
 		}
 		fetchJury()
 	}, [juryID])
-
+	if (!student?.theses) {
+		return <Alert severity="info">Student did not uploaded a thesis</Alert>
+	}
 	if (student?.student?.has_dissertation) {
 		return <Alert severity="info">Proposed Jury and Date</Alert>
 	}
