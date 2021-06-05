@@ -153,6 +153,7 @@ export function ManagedStudents() {
 					<TableCell component="th" scope="row">
 						{student.name_ + " " + student.surname}
 					</TableCell>
+					<TableCell></TableCell>
 					<TableCell align="right">
 						<IconButton
 							component={Link}

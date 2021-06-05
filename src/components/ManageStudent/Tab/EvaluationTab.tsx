@@ -1,8 +1,11 @@
-import { Typography, Card, CardContent, makeStyles, Button, Box } from "@material-ui/core"
+import { Card, CardContent, makeStyles, Button, Box, IconButton } from "@material-ui/core"
 import { useStudent, useQuery } from "@mbs/services"
 import { TheseData } from "../ThesesData"
 import Alert from "@material-ui/lab/Alert"
 import { useEffect, useState } from "react"
+import CloudDownloadIcon from "@material-ui/icons/CloudDownload"
+import { MBS } from "@mbs/utils"
+
 const useStyles = makeStyles((theme) => ({
 	root: {
 		minWidth: 375,
@@ -42,6 +45,9 @@ const useStyles = makeStyles((theme) => ({
 			backgroundColor: "#ffa733",
 		},
 	},
+	download: {
+		padding: 20,
+	},
 }))
 
 export function Evaluation() {
@@ -78,12 +84,27 @@ export function Evaluation() {
 		student?.refresh()
 		setLoad(load)
 	}
+	if (student === null) {
+		return null
+	}
 
 	return (
 		<Card className={classes.root}>
 			<Box>
 				<CardContent>
-					<TheseData />
+					<Box
+						padding={4}
+						marginBottom={3}
+						display="flex"
+						justifyContent="center"
+						alignItems="center">
+						<TheseData />
+						<a href={`${MBS?.url}/theses/${student?.student?.latest_thesis_id}`} download>
+							<IconButton className={classes.download}>
+								<CloudDownloadIcon fontSize="large" />
+							</IconButton>
+						</a>
+					</Box>
 				</CardContent>
 			</Box>
 			<Box
