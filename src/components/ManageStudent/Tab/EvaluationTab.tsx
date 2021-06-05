@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Card, CardContent, makeStyles, Button, Box, IconButton } from "@material-ui/core"
 import { useStudent, useQuery } from "@mbs/services"
 import { TheseData } from "../ThesesData"
@@ -59,15 +60,16 @@ export function Evaluation() {
 
 	useEffect(() => {
 		async function fetchDecision() {
-			let res = await query
+			await query
 				?.queryID<{
 					evaluation: string
 				}>("evaluation/" + student?.student?.student_id)
+				.then((e) => {
+					if (e !== undefined) {
+						setValue(e.evaluation)
+					}
+				})
 				.catch(() => setValue(""))
-			if (res !== undefined) {
-				setValue(res.evaluation)
-			}
-			console.log(res)
 		}
 		fetchDecision()
 	}, [load])
@@ -77,12 +79,12 @@ export function Evaluation() {
 	}
 
 	const handleEvaluation = async (e: string) => {
-		await query?.postActionWithBody("evaluation/" + student?.student?.student_id, {
+		let res = await query?.postActionWithBody("evaluation/" + student?.student?.student_id, {
 			thesis_id: student?.theses?.thesis_id,
 			evaluation: e,
 		})
 		student?.refresh()
-		setLoad(load)
+		setLoad(!load)
 	}
 	if (student === null) {
 		return null
@@ -105,52 +107,54 @@ export function Evaluation() {
 							</IconButton>
 						</a>
 					</Box>
+					<Box
+						fontWeight={150}
+						marginBottom={3}
+						display="flex"
+						justifyContent="center"
+						alignItems="center">
+						{student?.dissertation?.status === "Undecided" && value === "" ? (
+							<div>
+								<Button
+									variant="contained"
+									className={classes.accept}
+									onClick={() => handleEvaluation("Approved")}>
+									Accept
+								</Button>
+								<Button
+									variant="contained"
+									className={classes.correction}
+									onClick={() => handleEvaluation("Correction")}>
+									Correction
+								</Button>
+								<Button
+									variant="contained"
+									className={classes.reject}
+									onClick={() => handleEvaluation("Rejected")}>
+									Reject
+								</Button>
+							</div>
+						) : null}
+						<Box>
+							<Box display="flex" justifyContent="center" alignItems="center" margin={1}>
+								{value !== "" ? (
+									<Alert severity="info">You evaluated the thesis as {value}!</Alert>
+								) : null}
+							</Box>
+							<Box display="flex" justifyContent="center" alignItems="center" margin={1}>
+								{student?.dissertation?.status === "Approved" ? (
+									<Alert severity="info">Student thesis given Approval</Alert>
+								) : null}
+								{student?.dissertation?.status === "Corrected" ? (
+									<Alert severity="info">Student thesis given Correction</Alert>
+								) : null}
+								{student?.dissertation?.status === "Rejected" ? (
+									<Alert severity="info">Student thesis given Rejection</Alert>
+								) : null}
+							</Box>
+						</Box>
+					</Box>
 				</CardContent>
-			</Box>
-			<Box
-				fontWeight={150}
-				marginBottom={3}
-				display="flex"
-				justifyContent="center"
-				alignItems="center">
-				{student?.dissertation?.status === "Undecided" && value === "" ? (
-					<div>
-						<Button
-							variant="contained"
-							className={classes.accept}
-							onClick={() => handleEvaluation("Approved")}>
-							Accept
-						</Button>
-						<Button
-							variant="contained"
-							className={classes.correction}
-							onClick={() => handleEvaluation("Correction")}>
-							Correction
-						</Button>
-						<Button
-							variant="contained"
-							className={classes.reject}
-							onClick={() => handleEvaluation("Rejected")}>
-							Reject
-						</Button>
-					</div>
-				) : null}
-				<Box>
-					<Box display="flex" justifyContent="center" alignItems="center" margin={1}>
-						{value ? <Alert severity="info">You evaluated the thesis as {value}!</Alert> : null}
-					</Box>
-					<Box display="flex" justifyContent="center" alignItems="center" margin={1}>
-						{student?.dissertation?.status === "Approved" ? (
-							<Alert severity="info">Student thesis given Approval</Alert>
-						) : null}
-						{student?.dissertation?.status === "Corrected" ? (
-							<Alert severity="info">Student thesis given Correction</Alert>
-						) : null}
-						{student?.dissertation?.status === "Rejected" ? (
-							<Alert severity="info">Student thesis given Rejection</Alert>
-						) : null}
-					</Box>
-				</Box>
 			</Box>
 		</Card>
 	)

@@ -65,7 +65,6 @@ export function Thesis() {
 			await query
 				.updateInfo("students", student?.student?.student_id, topicForm.values)
 				.then((data) => {
-					console.log(data)
 					alert.openAlert("success", "advisor_change_topic")
 				})
 				.catch((err) => console.log(err))
@@ -80,7 +79,6 @@ export function Thesis() {
 					is_thesis_sent: true,
 				})
 				.then((data) => {
-					console.log(data)
 					alert.openAlert("success", "advisor_topic_submit")
 				})
 				.catch((err) => console.log(err))
@@ -92,7 +90,6 @@ export function Thesis() {
 		student?.refresh()
 	}, [])
 
-	console.log(student)
 	if (!student?.theses) {
 		return <Alert severity="info">Student did not uploaded a thesis</Alert>
 	}

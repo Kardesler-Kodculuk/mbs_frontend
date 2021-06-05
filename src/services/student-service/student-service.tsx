@@ -14,7 +14,7 @@ export const StudentProvider = (props: props) => {
 	const [theses, setTheses] = useState<ThesesData | null>(null)
 	const [dissertation, setDissertation] = useState<DissertationData | null>(null)
 	const [jury, setJury] = useState<JuryData[] | null>(null)
-
+	const [load, setLoad] = useState<boolean>(false)
 	const query = useContext(QueryContext)
 
 	const refresh = async () => {
@@ -23,6 +23,9 @@ export const StudentProvider = (props: props) => {
 				?.queryInfo<StudentData>("students", [student?.user_id])
 				.then((data) => {
 					setStudent(data[0])
+					if (data[0].user_id === student.user_id) {
+						setLoad(!load)
+					}
 				})
 				.then(() => {})
 				.catch((err) => console.log(err))
@@ -45,7 +48,7 @@ export const StudentProvider = (props: props) => {
 			}
 		}
 		fetchThese()
-	}, [student])
+	}, [student, load])
 
 	useEffect(() => {
 		setAdvisor(null)
@@ -62,7 +65,7 @@ export const StudentProvider = (props: props) => {
 			}
 		}
 		fetchAdvisor()
-	}, [student])
+	}, [student, load])
 
 	useEffect(() => {
 		setDissertation(null)
@@ -79,7 +82,7 @@ export const StudentProvider = (props: props) => {
 			}
 		}
 		fetchDissertation()
-	}, [student])
+	}, [student, load])
 
 	useEffect(() => {
 		async function fetchJury() {
