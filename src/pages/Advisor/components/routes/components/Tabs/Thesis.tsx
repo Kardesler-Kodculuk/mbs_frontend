@@ -63,16 +63,20 @@ export function Thesis() {
 	const handleTopic = async (e: React.SyntheticEvent): Promise<void> => {
 		if (alert && query && student?.student) {
 			e.preventDefault()
-			await query
-				.updateInfo("students", student?.student?.student_id, topicForm.values)
-				.then((data) => {
-					alert.openAlert("success", "advisor_change_topic")
+			if (topicForm.values["thesis_topic"] !== "") {
+				await query
+					.updateInfo("students", student?.student?.student_id, topicForm.values)
+					.then((data) => {
+						alert.openAlert("success", "advisor_change_topic")
+					})
+					.catch((err) => console.log(err))
+				student?.refresh()
+				topicForm.reset({
+					thesis_topic: "",
 				})
-				.catch((err) => console.log(err))
-			student?.refresh()
-			topicForm.reset({
-				thesis_topic: "",
-			})
+			} else {
+				alert.openAlert("warning", "advisor_change_topic")
+			}
 		}
 	}
 
@@ -121,17 +125,17 @@ export function Thesis() {
 						componentClassName={classes.button}
 						submit={{ value: "Update", handler: handleTopic }}>
 						<Box>
-							<TextField
-								value={student?.student.thesis_topic}
-								className={classes.input}
-								disabled
-							/>
+							<TextField value={student?.student.thesis_topic} className={classes.input} disabled />
 						</Box>
 						<Box>
 							<TextField
 								className={classes.input}
 								value={topicForm.values["thesis_topic"]}
-								onChange={(e) => topicForm.setValues("thesis_topic", e.target.value)}
+								onChange={(e) => {
+									if (e.target.value.length < 181) {
+										return topicForm.setValues("thesis_topic", e.target.value)
+									}
+								}}
 							/>
 						</Box>
 					</CustomDialog>
@@ -173,17 +177,17 @@ export function Thesis() {
 					componentClassName={classes.button}
 					submit={{ value: "Update", handler: handleTopic }}>
 					<Box>
-						<TextField
-							value={student?.student.thesis_topic}
-							className={classes.input}
-							disabled
-						/>
+						<TextField value={student?.student.thesis_topic} className={classes.input} disabled />
 					</Box>
 					<Box>
 						<TextField
 							className={classes.input}
 							value={topicForm.values["thesis_topic"]}
-							onChange={(e) => topicForm.setValues("thesis_topic", e.target.value)}
+							onChange={(e) => {
+								if (e.target.value.length < 181) {
+									return topicForm.setValues("thesis_topic", e.target.value)
+								}
+							}}
 						/>
 					</Box>
 				</CustomDialog>

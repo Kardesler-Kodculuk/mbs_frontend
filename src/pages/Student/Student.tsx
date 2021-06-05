@@ -8,7 +8,6 @@ export function Student() {
 	const alert = useAlert()
 	const [loaded, setLoaded] = useState(false)
 
-	
 	useEffect(() => {
 		if (alert) {
 			alert.createAlerts([
@@ -21,10 +20,7 @@ export function Student() {
 					"warning",
 				],
 				["success", "thesis-upload", "Thesis has been uploaded.", "success"],
-				[				"success",
-				"thesis-download-student",
-				"Thesis has been downloaded.",
-				"success"],
+				["success", "thesis-download-student", "Thesis has been downloaded.", "success"],
 				["success", "thesis-delete-student", "Thesis has been deleted.", "success"],
 				["error", "thesis-upload", "Upload failed.", "error"],
 			])

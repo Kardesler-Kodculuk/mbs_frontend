@@ -77,7 +77,11 @@ export function TopicForm() {
 								required
 								label={user?.user?.student?.thesis_topic}
 								color="primary"
-								onChange={(e) => form.setValues("thesis_topic", e.target.value)}
+								onChange={(e) => {
+									if (e.target.value.length < 181) {
+										return form.setValues("thesis_topic", e.target.value)
+									}
+								}}
 							/>
 							<Button variant="contained" color="primary" type="submit">
 								Submit
