@@ -44,15 +44,19 @@ export function Jury() {
 	const classes = useStyles()
 	const student = useStudent()
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-	
+
 	if (!student?.student?.has_dissertation) {
 		return <Alert severity="info">Student does not have a proposal</Alert>
 	}
 
-	if (!student?.theses || !student?.jury) {
-		return null
+	if (!student?.theses) {
+		return <Alert severity="info">Student did not uploaded a thesis</Alert>
 	}
 
+	if (!student?.jury) {
+		return <Alert severity="info">Student does not have a jury</Alert>
+	}
+	
 	const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
 		setAnchorEl(event.currentTarget)
 	}
