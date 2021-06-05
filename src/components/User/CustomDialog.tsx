@@ -50,6 +50,7 @@ type DialogData = {
 	onClick?: Function
 	variant?: string
 	onClose?: Function
+	disabled?: boolean
 }
 
 export function CustomDialog(props: DialogData) {
@@ -68,17 +69,24 @@ export function CustomDialog(props: DialogData) {
 
 	return (
 		<div>
-			<props.component
-				variant={props?.variant}
-				className={props?.componentClassName}
-				onClick={() => {
-					openDialog()
-					if (props.onClick) {
-						props?.onClick()
-					}
-				}}>
-				{props.componentName}
-			</props.component>
+			{props.disabled ? (
+				<props.component disabled variant={props?.variant} className={props?.componentClassName}>
+					{props.componentName}
+				</props.component>
+			) : (
+				<props.component
+					variant={props?.variant}
+					className={props?.componentClassName}
+					onClick={() => {
+						openDialog()
+						if (props.onClick) {
+							props?.onClick()
+						}
+					}}>
+					{props.componentName}
+				</props.component>
+			)}
+
 			<Dialog open={open} onClose={closeDialog} keepMounted>
 				<DialogTitle id="form-dialog-title">{props?.title}</DialogTitle>
 				<form onSubmit={props?.submit.handler}>

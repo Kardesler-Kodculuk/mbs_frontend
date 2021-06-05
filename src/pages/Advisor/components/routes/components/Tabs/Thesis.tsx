@@ -118,6 +118,7 @@ export function Thesis() {
 				justifyContent="center"
 				alignItems="center">
 				<CustomDialog
+					disabled={student.student?.is_thesis_sent}
 					title="Update Thesis Topic"
 					variant="contained"
 					component={Button}
