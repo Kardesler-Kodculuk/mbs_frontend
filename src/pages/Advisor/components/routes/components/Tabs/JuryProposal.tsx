@@ -105,7 +105,9 @@ export function JuryProposal() {
 	const selectableJury = useArray<JuryData>({ compare: compare })
 	const selectedJury = useArray<JuryData>({ compare: compare })
 	const selectedOutsideJury = useArray<outsideJury>({ compare: compareOutside })
-	const [selectedDate, setSelectedDate] = useState<Date | null>(new Date())
+	const date = new Date()
+	date.setDate(date.getDate() + 7)
+	const [selectedDate, setSelectedDate] = useState<Date | null>(date)
 	const student = useStudent()
 
 	const handleOutsideSubmit = (e: React.SyntheticEvent): void => {
@@ -244,7 +246,7 @@ export function JuryProposal() {
 				<Box>
 					<MuiPickersUtilsProvider utils={DateFnsUtils}>
 						<KeyboardDatePicker
-							minDate={new Date()}
+							minDate={date}
 							disableToolbar
 							variant="inline"
 							format="MM/dd/yyyy"
