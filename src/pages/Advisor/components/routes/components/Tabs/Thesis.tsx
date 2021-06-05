@@ -132,7 +132,7 @@ export function Thesis() {
 								className={classes.input}
 								value={topicForm.values["thesis_topic"]}
 								onChange={(e) => {
-									if (e.target.value.length < 181) {
+									if (e.target.value.length < 180) {
 										return topicForm.setValues("thesis_topic", e.target.value)
 									}
 								}}
@@ -184,7 +184,7 @@ export function Thesis() {
 							className={classes.input}
 							value={topicForm.values["thesis_topic"]}
 							onChange={(e) => {
-								if (e.target.value.length < 181) {
+								if (e.target.value.length < 180) {
 									return topicForm.setValues("thesis_topic", e.target.value)
 								}
 							}}

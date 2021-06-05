@@ -78,7 +78,7 @@ export function TopicForm() {
 								label={user?.user?.student?.thesis_topic}
 								color="primary"
 								onChange={(e) => {
-									if (e.target.value.length < 181) {
+									if (e.target.value.length < 180) {
 										return form.setValues("thesis_topic", e.target.value)
 									}
 								}}
