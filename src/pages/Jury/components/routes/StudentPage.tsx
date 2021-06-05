@@ -2,13 +2,12 @@
 import { UserTable } from "@mbs/components"
 import { ManagedStudents } from "./components/ManagedStudents"
 
-
 export function StudentPage() {
-    return (
-        <div>
-            <UserTable title={"Previously Uploaded Students"}>
-                <ManagedStudents />
-            </UserTable>
-        </div>
-    );
+	return (
+		<div>
+			<UserTable title={"Students"}>
+				<ManagedStudents />
+			</UserTable>
+		</div>
+	)
 }
