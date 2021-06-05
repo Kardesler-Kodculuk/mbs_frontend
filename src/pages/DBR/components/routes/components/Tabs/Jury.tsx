@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState } from "react"
 import { TheseData } from "@mbs/components"
 import { useQuery, useStudent } from "@mbs/services"
@@ -43,10 +44,11 @@ export function Jury() {
 	const query = useQuery()
 	const classes = useStyles()
 	const student = useStudent()
+	const [load, setLoad] = useState(false)
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
 	if (!student?.student?.has_dissertation) {
-		return <Alert severity="info">Student does not have a proposal</Alert>
+		return <Alert severity="info">There is no proposal for student's TSS Jury and Date</Alert>
 	}
 
 	if (!student?.theses) {
@@ -56,7 +58,7 @@ export function Jury() {
 	if (!student?.jury) {
 		return <Alert severity="info">Student does not have a jury</Alert>
 	}
-	
+
 	const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
 		setAnchorEl(event.currentTarget)
 	}
@@ -72,16 +74,16 @@ export function Jury() {
 		},
 	]
 
-	const handleApprove = () => {
+	const handleApprove = async () => {
 		if (student?.student?.student_id) {
-			query?.putID("dissertation/" + student?.student?.student_id)
+			await query?.putID("dissertation/" + student?.student?.student_id)
 			student.refresh()
 		}
 	}
 
-	const handleReject = () => {
+	const handleReject = async () => {
 		if (student?.student?.student_id) {
-			query?.deleteID("dissertation/" + student?.student?.student_id)
+			await query?.deleteID("dissertation/" + student?.student?.student_id)
 			student.refresh()
 		}
 	}
