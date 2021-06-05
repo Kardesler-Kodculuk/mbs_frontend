@@ -122,7 +122,7 @@ export function Thesis() {
 						submit={{ value: "Update", handler: handleTopic }}>
 						<Box>
 							<TextField
-								defaultValue={student?.student.thesis_topic}
+								value={student?.student.thesis_topic}
 								className={classes.input}
 								disabled
 							/>
@@ -174,7 +174,7 @@ export function Thesis() {
 					submit={{ value: "Update", handler: handleTopic }}>
 					<Box>
 						<TextField
-							defaultValue={student?.student.thesis_topic}
+							value={student?.student.thesis_topic}
 							className={classes.input}
 							disabled
 						/>
