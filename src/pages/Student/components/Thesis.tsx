@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, } from "react"
-import { useQuery, useAlert } from "@mbs/services"
+import { useQuery, useAlert,useUser } from "@mbs/services"
 import { ThesesData } from "@mbs/interfaces"
 import { UserTable } from "@mbs/components"
 import { TableRow, TableCell, Button, IconButton } from "@material-ui/core"
@@ -8,7 +8,7 @@ import { PlagiarismRatio } from "@mbs/components"
 import axios from "axios"
 import { MBS } from "@mbs/utils"
 import { Delete, CloudDownload } from "@material-ui/icons"
-
+import Alert from "@material-ui/lab/Alert"
 export function Thesis() {
 	const [load, setLoad] = useState<boolean>(true)
 	const [theses, setTheses] = useState<number[] | null>(null)
@@ -16,6 +16,7 @@ export function Thesis() {
 	const query = useQuery()
 	const [file, setFile] = useState<File | null>(null)
 	const alert = useAlert()
+	const user = useUser()
 
 	useEffect(() => {
 		async function fetchTheses() {
@@ -88,7 +89,10 @@ export function Thesis() {
 			.catch((err) => {})
 	}
 
-
+	if (!user?.user?.student?.is_approved){
+		return <Alert severity="info">You need to be approved to upload Thesis</Alert>
+	}
+	
 	return (
 		<div>
 			<UserTable
