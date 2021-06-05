@@ -93,7 +93,7 @@ export function Thesis() {
 			student?.refresh()
 		}
 	}
-
+	
 	useEffect(() => {
 		student?.refresh()
 	}, [])

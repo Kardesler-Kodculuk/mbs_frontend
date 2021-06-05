@@ -20,7 +20,7 @@ export function Advisor() {
 					"warning",
 				],
 				["warning", "advisor_jury_proposal", "Please add more members.", "warning"],
-				["success", "advisor_jury_proposal", "Proposal successful.", "success"],
+				["success", "advisor_jury_proposal", "Jury proposal successful.", "success"],
 				["error", "advisor_jury_proposal", "Please add more members.", "error"],
 				["warning", "advisor_change_topic", "Invalid input.", "warning"],
 				["success", "advisor_change_topic", "Topic changed.", "success"],
