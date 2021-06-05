@@ -79,7 +79,7 @@ export function Evaluation() {
 	}
 
 	const handleEvaluation = async (e: string) => {
-		let res = await query?.postActionWithBody("evaluation/" + student?.student?.student_id, {
+		await query?.postActionWithBody("evaluation/" + student?.student?.student_id, {
 			thesis_id: student?.theses?.thesis_id,
 			evaluation: e,
 		})

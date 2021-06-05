@@ -171,7 +171,6 @@ export function JuryProposal() {
 		setJurySelectionID(event.target.value as number)
 	}
 
-	
 	const handleRecommendation = () => {
 		if (selectedDate) {
 			query
@@ -245,6 +244,7 @@ export function JuryProposal() {
 				<Box>
 					<MuiPickersUtilsProvider utils={DateFnsUtils}>
 						<KeyboardDatePicker
+							minDate={new Date()}
 							disableToolbar
 							variant="inline"
 							format="MM/dd/yyyy"

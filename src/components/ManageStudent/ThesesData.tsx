@@ -10,8 +10,19 @@ type props = {
 export function TheseData(props: props) {
 	const studentContext = useStudent()
 
-	if (!studentContext || !studentContext?.theses) {
+	if (!studentContext) {
 		return null
+	}
+
+	if (!studentContext?.theses) {
+		return (
+			<Container>
+				<Box fontWeight="fontWeightBold" component="div" display="inline">
+					Thesis Topic:
+				</Box>
+				{"   " + studentContext?.student?.thesis_topic}
+			</Container>
+		)
 	}
 
 	return (

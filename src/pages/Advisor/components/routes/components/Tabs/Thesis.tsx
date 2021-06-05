@@ -11,6 +11,7 @@ import Alert from "@material-ui/lab/Alert"
 const useStyles = makeStyles((theme) => ({
 	root: {
 		minWidth: 375,
+		padding: 10,
 	},
 	title: {
 		fontSize: 24,
@@ -69,6 +70,9 @@ export function Thesis() {
 				})
 				.catch((err) => console.log(err))
 			student?.refresh()
+			topicForm.reset({
+				thesis_topic: "",
+			})
 		}
 	}
 
@@ -90,16 +94,62 @@ export function Thesis() {
 		student?.refresh()
 	}, [])
 
-	if (!student?.theses) {
-		return <Alert severity="info">Student did not uploaded a thesis</Alert>
-	}
 	if (!student?.student) {
 		return null
 	}
 
+	if (!student?.theses) {
+		return (
+			<Card className={classes.root}>
+				<Box display="flex" justifyContent="center" alignItems="center">
+					<TheseData />
+				</Box>
+
+				<Box
+					fontWeight={150}
+					marginBottom={3}
+					marginTop={2}
+					display="flex"
+					justifyContent="center"
+					alignItems="center">
+					<CustomDialog
+						disabled={student.student?.is_thesis_sent}
+						title="Update Thesis Topic"
+						variant="contained"
+						component={Button}
+						componentName="Update Topic"
+						componentClassName={classes.button}
+						submit={{ value: "Update", handler: handleTopic }}>
+						<Box>
+							<TextField
+								defaultValue={student?.student.thesis_topic}
+								className={classes.input}
+								disabled
+							/>
+						</Box>
+						<Box>
+							<TextField
+								className={classes.input}
+								value={topicForm.values["thesis_topic"]}
+								onChange={(e) => topicForm.setValues("thesis_topic", e.target.value)}
+							/>
+						</Box>
+					</CustomDialog>
+				</Box>
+				<Alert severity="info">Student did not uploaded a thesis</Alert>
+			</Card>
+		)
+	}
+
 	return (
 		<Card className={classes.root}>
-			<Box padding={4} marginBottom={3} display="flex" justifyContent="center" alignItems="center">
+			<Box
+				margin={2}
+				padding={4}
+				marginBottom={3}
+				display="flex"
+				justifyContent="center"
+				alignItems="center">
 				<TheseData data={data} />
 				<a href={`${MBS?.url}/theses/${student.student.latest_thesis_id}`} download>
 					<IconButton className={classes.download}>
@@ -124,7 +174,7 @@ export function Thesis() {
 					submit={{ value: "Update", handler: handleTopic }}>
 					<Box>
 						<TextField
-							defaultValue={student?.theses.thesis_topic}
+							defaultValue={student?.student.thesis_topic}
 							className={classes.input}
 							disabled
 						/>
